@@ -1,0 +1,84 @@
+import { MinesweeperPreview } from './minesweeper/MinesweeperPreview'
+import { NoughtsAndCrossesPreview } from './noughts-and-crosses/NoughtsAndCrossesPreview'
+import { PongPreview } from './pong/PongPreview'
+import { SolitairePreview } from './solitaire/SolitairePreview'
+import type { GameDefinition } from './types'
+
+export const games: GameDefinition[] = [
+  {
+    slug: 'pong',
+    name: 'Pong',
+    genre: 'Arcade',
+    status: 'Planned',
+    description:
+      'A responsive paddle game with keyboard controls, a paced AI opponent, and a clean single-screen layout.',
+    tags: ['Realtime', 'Keyboard', 'Canvas-friendly'],
+    highlights: [
+      'Single-player vs AI for the first version.',
+      'Shared pause, restart, score, and difficulty controls.',
+      'Logic split cleanly from rendering for future polish and testing.',
+    ],
+    controls: 'Keyboard-first, with optional touch controls in a later pass.',
+    initialMode: 'One-player arcade match against a simple AI opponent.',
+    expansionPath: 'Two-player local mode, touch input, match presets, and sound design.',
+    preview: PongPreview,
+  },
+  {
+    slug: 'minesweeper',
+    name: 'Minesweeper',
+    genre: 'Puzzle',
+    status: 'Planned',
+    description:
+      'A modern take on the classic deduction puzzle with preset boards, timer tracking, and first-click safety.',
+    tags: ['Grid logic', 'Persistence', 'Difficulty presets'],
+    highlights: [
+      'Beginner, intermediate, and expert board sizes.',
+      'First click is always safe and opens space cleanly.',
+      'State model can later support streaks and best-time history.',
+    ],
+    controls: 'Mouse or touch for reveal and flag actions.',
+    initialMode: 'Classic single-board play with three preset difficulty levels.',
+    expansionPath: 'Custom boards, stat history, hints, and accessibility helpers.',
+    preview: MinesweeperPreview,
+  },
+  {
+    slug: 'noughts-and-crosses',
+    name: 'Noughts and Crosses',
+    genre: 'Strategy',
+    status: 'Framework Ready',
+    description:
+      'The fastest route to proving the game architecture: compact rules, clear end states, and reusable UI patterns.',
+    tags: ['Turn-based', 'Local multiplayer', 'AI-ready'],
+    highlights: [
+      'First build target for validating shared game-shell patterns.',
+      'Supports local play first, with simple AI as the likely next add-on.',
+      'Perfect candidate for extracting reusable board and status components.',
+    ],
+    controls: 'Click or tap a square to place a mark.',
+    initialMode: 'Two-player local play, with AI planned immediately after.',
+    expansionPath: 'Simple AI, score streaks, board themes, and keyboard navigation.',
+    preview: NoughtsAndCrossesPreview,
+  },
+  {
+    slug: 'solitaire',
+    name: 'Solitaire',
+    genre: 'Card game',
+    status: 'Planned',
+    description:
+      'Klondike draw-one with approachable card movement, clear pile states, and room for richer interaction later.',
+    tags: ['Card logic', 'Drag and drop', 'State validation'],
+    highlights: [
+      'Klondike draw-one for the first shipped variant.',
+      'Move validation lives in pure logic helpers where possible.',
+      'Interaction model is built with future undo and hint support in mind.',
+    ],
+    controls: 'Click-to-move first, drag support layered in with care.',
+    initialMode: 'Classic Klondike draw-one with stock, waste, foundations, and tableau.',
+    expansionPath: 'Undo, hints, draw-three mode, scoring, and themed decks.',
+    preview: SolitairePreview,
+  },
+]
+
+export function getGameBySlug(slug: string) {
+  return games.find((game) => game.slug === slug)
+}
