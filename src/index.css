@@ -919,17 +919,22 @@ img {
 }
 
 .solitaire-top-row {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   align-items: start;
 }
 
 .solitaire-deck-row {
+  grid-column: span 2;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .solitaire-foundations,
 .solitaire-tableau {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.solitaire-foundations {
+  grid-column: span 4;
 }
 
 .solitaire-tableau {
