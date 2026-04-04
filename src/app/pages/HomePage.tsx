@@ -17,7 +17,7 @@ const checklist = [
     summary: 'Land the simplest rules-driven games first to prove the architecture.',
     items: [
       'Ship Noughts and Crosses with local play and an unbeatable AI mode.',
-      'Build Minesweeper with presets, timer, and first-click safety.',
+      'Ship Minesweeper with presets, timer, first-click safety, and best times.',
       'Persist settings that matter across refreshes.',
     ],
   },
@@ -46,7 +46,7 @@ export function HomePage() {
     <>
       <section className="hero">
         <div className="panel hero-copy">
-          <span className="eyebrow">First playable game live</span>
+          <span className="eyebrow">Two playable games live</span>
           <h1>Modern browser games, built to grow one title at a time.</h1>
           <p>
             This repo is set up as a static React app with a shared shell, a
@@ -63,8 +63,8 @@ export function HomePage() {
           </div>
           <div className="hero-grid">
             <article className="stat-card">
-              <strong>4</strong>
-              <p>Initial games in scope for the first release wave.</p>
+              <strong>2 / 4</strong>
+              <p>Initial games now playable in the first release wave.</p>
             </article>
             <article className="stat-card">
               <strong>Static</strong>

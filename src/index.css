@@ -585,14 +585,31 @@ img {
   align-items: start;
 }
 
+.minesweeper-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: 18px;
+  align-items: start;
+}
+
 .noughts-main,
 .noughts-side {
   display: grid;
   gap: 18px;
 }
 
+.minesweeper-main,
+.minesweeper-side {
+  display: grid;
+  gap: 18px;
+}
+
 .score-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mines-meta-grid {
+  align-items: stretch;
 }
 
 .score-card {
@@ -632,6 +649,87 @@ img {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+.tool-switch {
+  width: fit-content;
+}
+
+.minesweeper-board-wrap {
+  overflow-x: auto;
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(255, 251, 244, 0.78);
+}
+
+.minesweeper-board {
+  display: grid;
+  gap: 6px;
+  width: max-content;
+}
+
+.mine-cell {
+  display: grid;
+  place-items: center;
+  width: 2.3rem;
+  aspect-ratio: 1;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-weight: 800;
+  background: rgba(255, 252, 247, 0.92);
+  color: var(--heading);
+  transition:
+    transform 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease;
+}
+
+.mine-cell.hidden {
+  background: linear-gradient(180deg, #fff9ee, #f0e1cd);
+}
+
+.mine-cell.hidden:hover {
+  transform: translateY(-1px);
+  border-color: rgba(31, 122, 106, 0.26);
+}
+
+.mine-cell.flagged {
+  color: #8d6121;
+  background: linear-gradient(180deg, rgba(191, 138, 63, 0.18), rgba(240, 225, 205, 0.92));
+}
+
+.mine-cell.revealed {
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.mine-cell.mine {
+  color: #f7f1e8;
+  border-color: rgba(181, 84, 72, 0.4);
+  background: linear-gradient(180deg, #cf7367, var(--danger));
+}
+
+.mine-cell.value-1 {
+  color: #2f74a7;
+}
+
+.mine-cell.value-2 {
+  color: #1d7a61;
+}
+
+.mine-cell.value-3 {
+  color: #8b5d1e;
+}
+
+.mine-cell.value-4 {
+  color: #8f3f74;
+}
+
+.mine-cell.value-5,
+.mine-cell.value-6,
+.mine-cell.value-7,
+.mine-cell.value-8 {
+  color: #4b64b8;
 }
 
 .board-cell {
@@ -777,6 +875,7 @@ img {
   .details-grid,
   .solitaire-stack,
   .noughts-layout,
+  .minesweeper-layout,
   .score-grid {
     grid-template-columns: 1fr;
   }
@@ -803,6 +902,10 @@ img {
   }
 
   .mode-switch {
+    width: 100%;
+  }
+
+  .tool-switch {
     width: 100%;
   }
 }

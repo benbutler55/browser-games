@@ -1,3 +1,4 @@
+import { MinesweeperGame } from './minesweeper/MinesweeperGame'
 import { MinesweeperPreview } from './minesweeper/MinesweeperPreview'
 import { NoughtsAndCrossesGame } from './noughts-and-crosses/NoughtsAndCrossesGame'
 import { NoughtsAndCrossesPreview } from './noughts-and-crosses/NoughtsAndCrossesPreview'
@@ -28,19 +29,20 @@ export const games: GameDefinition[] = [
     slug: 'minesweeper',
     name: 'Minesweeper',
     genre: 'Puzzle',
-    status: 'Planned',
+    status: 'Playable',
     description:
       'A modern take on the classic deduction puzzle with preset boards, timer tracking, and first-click safety.',
     tags: ['Grid logic', 'Persistence', 'Difficulty presets'],
     highlights: [
       'Beginner, intermediate, and expert board sizes.',
       'First click is always safe and opens space cleanly.',
-      'State model can later support streaks and best-time history.',
+      'State model now supports difficulty persistence and best-time history.',
     ],
     controls: 'Mouse or touch for reveal and flag actions.',
     initialMode: 'Classic single-board play with three preset difficulty levels.',
     expansionPath: 'Custom boards, stat history, hints, and accessibility helpers.',
     preview: MinesweeperPreview,
+    playable: MinesweeperGame,
   },
   {
     slug: 'noughts-and-crosses',

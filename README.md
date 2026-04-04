@@ -11,15 +11,16 @@ Browser Games is a static web app for hosting a growing collection of polished, 
 
 ## Current status
 
-The repo now contains the shared application foundation plus the first playable game:
+The repo now contains the shared application foundation plus two playable games:
 
 - shared app shell and navigation
 - game registry for future expansion
 - home page with implementation roadmap
 - a fully playable `Noughts and Crosses` game with local multiplayer and computer mode
+- a fully playable `Minesweeper` game with three difficulties, first-click safety, timer tracking, and local best times
 - per-game overview pages for the remaining planned lineup
 - responsive styling and static-hosting-safe routing
-- GitHub Pages deployment workflow in `.github/workflows/deploy.yml`
+- CI and GitHub Pages deployment workflows in `.github/workflows/`
 
 ## Initial game lineup
 
@@ -64,9 +65,9 @@ src/
 
 ### Phase 2 - First playable games
 
-1. Implement Minesweeper with difficulty presets and first-click safety.
-2. Reuse the Noughts and Crosses board, score, and status patterns where useful.
-3. Add shared restart, status, and settings patterns across games.
+1. Reuse the Noughts and Crosses and Minesweeper state, status, and persistence patterns where useful.
+2. Continue tightening shared restart, status, and settings patterns across games.
+3. Prepare shared utility layers that make `Pong` and `Solitaire` easier to land cleanly.
 
 ### Phase 3 - Realtime systems
 
@@ -101,5 +102,11 @@ This project is intended to be pushed to GitHub and served via GitHub Pages as a
 - GitHub Actions workflow: `.github/workflows/deploy.yml`
 - Deployment target: GitHub Pages
 - Trigger: push to `main` or manual workflow dispatch
+
+## Continuous integration
+
+- CI workflow: `.github/workflows/ci.yml`
+- Validation steps: `npm run lint` and `npm run build`
+- Runtime note: workflows explicitly opt into the Node 24 JavaScript actions runtime to avoid the GitHub deprecation path for Node 20-based actions.
 
 If Pages is not already configured in the repository settings, set the site source to `GitHub Actions`.
