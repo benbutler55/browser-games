@@ -234,7 +234,40 @@ export function isWon(state: GameState) {
 }
 
 export function formatCardLabel(card: Card) {
-  return `${formatRank(card.rank)}${formatSuit(card.suit)}`
+  return `${formatRank(card.rank)}${formatSuitGlyph(card.suit)}`
+}
+
+export function formatRank(rank: number) {
+  if (rank === 1) {
+    return 'A'
+  }
+
+  if (rank === 11) {
+    return 'J'
+  }
+
+  if (rank === 12) {
+    return 'Q'
+  }
+
+  if (rank === 13) {
+    return 'K'
+  }
+
+  return `${rank}`
+}
+
+export function formatSuitGlyph(suit: Suit) {
+  switch (suit) {
+    case 'clubs':
+      return '♣'
+    case 'diamonds':
+      return '♦'
+    case 'hearts':
+      return '♥'
+    case 'spades':
+      return '♠'
+  }
 }
 
 export function isRed(card: Card) {
@@ -326,37 +359,4 @@ function revealLastCard(cards: Card[]) {
   }
 
   return nextCards
-}
-
-function formatRank(rank: number) {
-  if (rank === 1) {
-    return 'A'
-  }
-
-  if (rank === 11) {
-    return 'J'
-  }
-
-  if (rank === 12) {
-    return 'Q'
-  }
-
-  if (rank === 13) {
-    return 'K'
-  }
-
-  return `${rank}`
-}
-
-function formatSuit(suit: Suit) {
-  switch (suit) {
-    case 'clubs':
-      return 'C'
-    case 'diamonds':
-      return 'D'
-    case 'hearts':
-      return 'H'
-    case 'spades':
-      return 'S'
-  }
 }

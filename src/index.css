@@ -888,6 +888,12 @@ img {
   text-transform: uppercase;
 }
 
+.foundation-label {
+  font-size: 2rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 .solitaire-card-back,
 .solitaire-playing-card {
   display: grid;
@@ -930,10 +936,109 @@ img {
 
 .solitaire-playing-card {
   position: relative;
+  overflow: hidden;
 }
 
 .solitaire-playing-card.red-card {
   color: #b55448;
+}
+
+.card-corner {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 0.05rem;
+  font-size: 0.95rem;
+  line-height: 0.95;
+}
+
+.card-corner.top-left {
+  top: 0.6rem;
+  left: 0.55rem;
+}
+
+.card-corner.bottom-right {
+  right: 0.55rem;
+  bottom: 0.6rem;
+  transform: rotate(180deg);
+}
+
+.card-pips,
+.face-illustration {
+  display: grid;
+  place-self: center;
+  width: 100%;
+  height: 100%;
+}
+
+.card-pips {
+  align-content: center;
+  gap: 0.15rem;
+  padding: 1.3rem 0.35rem;
+}
+
+.pip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 0.45rem;
+}
+
+.pip-row.center {
+  justify-content: center;
+}
+
+.pip {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.rank-1 .pip,
+.rank-2 .pip,
+.rank-3 .pip,
+.rank-5 .pip {
+  font-size: 1.4rem;
+}
+
+.face-illustration {
+  position: relative;
+  align-content: center;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: 1.3rem 0.6rem;
+}
+
+.face-frame {
+  position: absolute;
+  inset: 1.6rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(36, 24, 13, 0.12);
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.65), transparent 42%),
+    linear-gradient(180deg, rgba(245, 237, 225, 0.78), rgba(255, 255, 255, 0.24));
+}
+
+.face-badge,
+.face-suit {
+  position: relative;
+  z-index: 1;
+}
+
+.face-badge {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.face-suit {
+  font-size: 2rem;
+  line-height: 1;
 }
 
 .solitaire-playing-card.selected-face,

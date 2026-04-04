@@ -5,6 +5,8 @@ import {
   createInitialGame,
   drawFromStock,
   formatCardLabel,
+  formatRank,
+  formatSuitGlyph,
   getFoundationSuit,
   getSelectedCards,
   isRed,
@@ -262,7 +264,9 @@ export function SolitaireGame() {
                         {topCard ? (
                           <CardView card={topCard} selected={isSelected} />
                         ) : (
-                          <span className="slot-label">{getFoundationSuit(pileIndex).slice(0, 1).toUpperCase()}</span>
+                          <span className="slot-label foundation-label">
+                            {formatSuitGlyph(getFoundationSuit(pileIndex))}
+                          </span>
                         )}
                       </button>
                     )
@@ -339,19 +343,72 @@ function CardView({ card, selected = false }: CardViewProps) {
     return <span className={selected ? 'solitaire-playing-card face-down selected-face' : 'solitaire-playing-card face-down'} />
   }
 
+  const rank = formatRank(card.rank)
+  const suitGlyph = formatSuitGlyph(card.suit)
+  const faceClassName = isRed(card)
+    ? selected
+      ? 'solitaire-playing-card red-card selected-face'
+      : 'solitaire-playing-card red-card'
+    : selected
+      ? 'solitaire-playing-card selected-face'
+      : 'solitaire-playing-card'
+
   return (
-    <span
-      className={
-        isRed(card)
-          ? selected
-            ? 'solitaire-playing-card red-card selected-face'
-            : 'solitaire-playing-card red-card'
-          : selected
-            ? 'solitaire-playing-card selected-face'
-            : 'solitaire-playing-card'
-      }
-    >
-      <span>{formatCardLabel(card)}</span>
+    <span className={faceClassName} aria-label={formatCardLabel(card)}>
+      <span className="card-corner top-left">
+        <span>{rank}</span>
+        <span>{suitGlyph}</span>
+      </span>
+      <span className="card-corner bottom-right" aria-hidden="true">
+        <span>{rank}</span>
+        <span>{suitGlyph}</span>
+      </span>
+      {card.rank <= 10 ? (
+        <span className={`card-pips rank-${card.rank}`} aria-hidden="true">
+          {getPipRows(card.rank).map((count, rowIndex) => (
+            <span className={count === 1 ? 'pip-row center' : 'pip-row'} key={`${card.id}-${rowIndex}`}>
+              {Array.from({ length: count }, (_, pipIndex) => (
+                <span className="pip" key={`${card.id}-${rowIndex}-${pipIndex}`}>
+                  {suitGlyph}
+                </span>
+              ))}
+            </span>
+          ))}
+        </span>
+      ) : (
+        <span className="face-illustration" aria-hidden="true">
+          <span className="face-badge">{rank}</span>
+          <span className="face-suit">{suitGlyph}</span>
+          <span className="face-frame" />
+        </span>
+      )}
     </span>
   )
+}
+
+function getPipRows(rank: number) {
+  switch (rank) {
+    case 1:
+      return [1]
+    case 2:
+      return [1, 1]
+    case 3:
+      return [1, 1, 1]
+    case 4:
+      return [2, 2]
+    case 5:
+      return [2, 1, 2]
+    case 6:
+      return [2, 2, 2]
+    case 7:
+      return [2, 1, 2, 2]
+    case 8:
+      return [2, 2, 2, 2]
+    case 9:
+      return [2, 2, 1, 2, 2]
+    case 10:
+      return [2, 2, 2, 2, 2]
+    default:
+      return [1]
+  }
 }
