@@ -4,12 +4,11 @@ This document tracks the next round of improvements for the current game lineup.
 
 ## Pong
 
-1. Add touch controls for mobile play.
-2. Add local two-player mode.
-3. Add match settings for target score and ball speed.
-4. Add lightweight sound effects with a mute toggle.
-5. Improve rally feedback with serve countdowns and point transitions.
-6. Add optional spin and speed modifiers that make advanced returns more expressive.
+1. Add lightweight sound effects with a mute toggle.
+2. Improve rally feedback with serve countdowns and point transitions.
+3. Add optional spin and speed modifiers that make advanced returns more expressive.
+4. Add stronger presentation polish for local two-player sessions.
+5. Add touch-specific layout tuning for smaller phones.
 
 ## Minesweeper
 
@@ -48,7 +47,7 @@ This document tracks the next round of improvements for the current game lineup.
 
 ## Suggested Next Round
 
-1. `Pong`: touch controls, local two-player mode, and stronger match settings.
-2. `Solitaire`: undo, hints, and draw-three support.
-3. `Noughts and Crosses`: AI difficulty tiers and keyboard navigation.
-4. `Minesweeper`: touch polish, deeper stats, and hint/error feedback.
+1. `Solitaire`: undo, hints, and draw-three support.
+2. `Noughts and Crosses`: AI difficulty tiers and keyboard navigation.
+3. `Minesweeper`: touch polish, deeper stats, and hint/error feedback.
+4. `Pong`: sound, presentation polish, and advanced match modifiers.

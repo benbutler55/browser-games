@@ -4,12 +4,12 @@ import {
   advanceSnapshot,
   AI_X,
   BALL_SIZE,
+  type ControlMode,
   createServeSnapshot,
   difficultyConfig,
   PADDLE_HEIGHT,
   PADDLE_WIDTH,
   PLAYER_X,
-  TARGET_SCORE,
   type InputState,
   type PaddleSide,
   type PongDifficulty,
@@ -23,26 +23,57 @@ type Score = {
   ai: number
 }
 
+type SpeedPreset = 'standard' | 'fast' | 'blitz'
+
 const difficultyLabels: Record<PongDifficulty, string> = {
   casual: 'Casual',
   arcade: 'Arcade',
   expert: 'Expert',
 }
 
+const modeLabels: Record<ControlMode, string> = {
+  computer: 'Vs AI',
+  local: 'Two players',
+}
+
+const speedLabels: Record<SpeedPreset, string> = {
+  standard: 'Standard',
+  fast: 'Fast',
+  blitz: 'Blitz',
+}
+
+const speedMultiplier: Record<SpeedPreset, number> = {
+  standard: 1,
+  fast: 1.14,
+  blitz: 1.28,
+}
+
+const targetScoreOptions = [5, 7, 11]
+
 const emptyScore: Score = {
   player: 0,
   ai: 0,
 }
 
+const emptyInputState: InputState = {
+  playerUp: false,
+  playerDown: false,
+  opponentUp: false,
+  opponentDown: false,
+}
+
 export function PongGame() {
+  const [mode, setMode] = useLocalStorage<ControlMode>('pong-mode', 'computer')
   const [difficulty, setDifficulty] = useLocalStorage<PongDifficulty>('pong-difficulty', 'arcade')
+  const [speed, setSpeed] = useLocalStorage<SpeedPreset>('pong-speed', 'standard')
+  const [targetScore, setTargetScore] = useLocalStorage<number>('pong-target-score', 5)
   const [snapshot, setSnapshot] = useState<PongSnapshot>(() =>
-    createServeSnapshot(difficultyConfig[difficulty], 'right'),
+    createServeSnapshot(getMatchConfig('computer', difficulty, 'standard'), 'right'),
   )
   const [score, setScore] = useState<Score>(emptyScore)
   const [phase, setPhase] = useState<MatchPhase>('ready')
   const [message, setMessage] = useState(
-    'Press start match, then move with W/S or the arrow keys.',
+    getReadyMessage('computer'),
   )
 
   const frameRef = useRef<number | null>(null)
@@ -50,8 +81,11 @@ export function PongGame() {
   const serveTimeoutRef = useRef<number | null>(null)
   const snapshotRef = useRef(snapshot)
   const scoreRef = useRef(score)
+  const modeRef = useRef(mode)
   const difficultyRef = useRef(difficulty)
-  const inputRef = useRef<InputState>({ moveUp: false, moveDown: false })
+  const speedRef = useRef(speed)
+  const targetScoreRef = useRef(targetScore)
+  const inputRef = useRef<InputState>(emptyInputState)
 
   useEffect(() => {
     snapshotRef.current = snapshot
@@ -62,8 +96,20 @@ export function PongGame() {
   }, [score])
 
   useEffect(() => {
+    modeRef.current = mode
+  }, [mode])
+
+  useEffect(() => {
     difficultyRef.current = difficulty
   }, [difficulty])
+
+  useEffect(() => {
+    speedRef.current = speed
+  }, [speed])
+
+  useEffect(() => {
+    targetScoreRef.current = targetScore
+  }, [targetScore])
 
   const handleScore = useCallback((scorer: PaddleSide) => {
     const nextScore = {
@@ -74,19 +120,23 @@ export function PongGame() {
     scoreRef.current = nextScore
     setScore(nextScore)
 
-    if (nextScore[scorer] >= TARGET_SCORE) {
+    if (nextScore[scorer] >= targetScoreRef.current) {
       setPhase('finished')
       setMessage(
         scorer === 'player'
-          ? 'You win the match. Start a new one or raise the difficulty.'
-          : 'The AI takes the match. Reset and try a sharper return angle.',
+          ? modeRef.current === 'computer'
+            ? 'You win the match. Start a new one or raise the difficulty.'
+            : 'Player 1 wins the match. Start a new round or change the settings.'
+          : modeRef.current === 'computer'
+            ? 'The AI takes the match. Reset and try a sharper return angle.'
+            : 'Player 2 wins the match. Start a new round or change the settings.',
       )
       return
     }
 
     const serveDirection = scorer === 'player' ? 'right' : 'left'
     const nextSnapshot = createServeSnapshot(
-      difficultyConfig[difficultyRef.current],
+      getMatchConfig(modeRef.current, difficultyRef.current, speedRef.current),
       serveDirection,
     )
 
@@ -95,8 +145,12 @@ export function PongGame() {
     setPhase('between-rounds')
     setMessage(
       scorer === 'player'
-        ? 'You score. Next serve is heading back toward the AI.'
-        : 'The AI scores. Get ready to defend the next serve.',
+        ? modeRef.current === 'computer'
+          ? 'You score. Next serve is heading back toward the AI.'
+          : 'Player 1 scores. Next serve heads toward Player 2.'
+        : modeRef.current === 'computer'
+          ? 'The AI scores. Get ready to defend the next serve.'
+          : 'Player 2 scores. Next serve heads toward Player 1.',
     )
 
     if (serveTimeoutRef.current !== null) {
@@ -104,7 +158,7 @@ export function PongGame() {
     }
 
     serveTimeoutRef.current = window.setTimeout(() => {
-      setMessage('Rally in progress. Keep the ball away from your wall.')
+      setMessage(getLiveMessage(modeRef.current))
       setPhase('running')
     }, 900)
   }, [])
@@ -113,14 +167,34 @@ export function PongGame() {
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase()
 
-      if (key === 'w' || key === 'arrowup') {
+      if (key === 'w') {
         event.preventDefault()
-        inputRef.current.moveUp = true
+        inputRef.current.playerUp = true
       }
 
-      if (key === 's' || key === 'arrowdown') {
+      if (key === 's') {
         event.preventDefault()
-        inputRef.current.moveDown = true
+        inputRef.current.playerDown = true
+      }
+
+      if (key === 'arrowup') {
+        event.preventDefault()
+
+        if (modeRef.current === 'local') {
+          inputRef.current.opponentUp = true
+        } else {
+          inputRef.current.playerUp = true
+        }
+      }
+
+      if (key === 'arrowdown') {
+        event.preventDefault()
+
+        if (modeRef.current === 'local') {
+          inputRef.current.opponentDown = true
+        } else {
+          inputRef.current.playerDown = true
+        }
       }
 
       if (event.code === 'Space') {
@@ -132,7 +206,7 @@ export function PongGame() {
           }
 
           if (currentPhase === 'paused' || currentPhase === 'ready') {
-            setMessage('Rally in progress. Keep the ball away from your wall.')
+            setMessage(getLiveMessage(modeRef.current))
             return 'running'
           }
 
@@ -144,12 +218,28 @@ export function PongGame() {
     const handleKeyUp = (event: KeyboardEvent) => {
       const key = event.key.toLowerCase()
 
-      if (key === 'w' || key === 'arrowup') {
-        inputRef.current.moveUp = false
+      if (key === 'w') {
+        inputRef.current.playerUp = false
       }
 
-      if (key === 's' || key === 'arrowdown') {
-        inputRef.current.moveDown = false
+      if (key === 's') {
+        inputRef.current.playerDown = false
+      }
+
+      if (key === 'arrowup') {
+        if (modeRef.current === 'local') {
+          inputRef.current.opponentUp = false
+        } else {
+          inputRef.current.playerUp = false
+        }
+      }
+
+      if (key === 'arrowdown') {
+        if (modeRef.current === 'local') {
+          inputRef.current.opponentDown = false
+        } else {
+          inputRef.current.playerDown = false
+        }
       }
     }
 
@@ -172,7 +262,7 @@ export function PongGame() {
       return
     }
 
-    const config = difficultyConfig[difficulty]
+    const config = getMatchConfig(mode, difficulty, speed)
 
     const frame = (timestamp: number) => {
       if (lastFrameRef.current === null) {
@@ -184,7 +274,13 @@ export function PongGame() {
       const deltaSeconds = Math.min((timestamp - lastFrameRef.current) / 1000, 0.032)
       lastFrameRef.current = timestamp
 
-      const result = advanceSnapshot(snapshotRef.current, deltaSeconds, config, inputRef.current)
+      const result = advanceSnapshot(
+        snapshotRef.current,
+        deltaSeconds,
+        config,
+        inputRef.current,
+        mode,
+      )
 
       if (result.scorer) {
         handleScore(result.scorer)
@@ -205,7 +301,7 @@ export function PongGame() {
       frameRef.current = null
       lastFrameRef.current = null
     }
-  }, [difficulty, handleScore, phase])
+  }, [difficulty, handleScore, mode, phase, speed])
 
   useEffect(() => {
     return () => {
@@ -221,14 +317,17 @@ export function PongGame() {
       serveTimeoutRef.current = null
     }
 
-    const nextSnapshot = createServeSnapshot(difficultyConfig[nextDifficulty], 'right')
+    const nextSnapshot = createServeSnapshot(
+      getMatchConfig(modeRef.current, nextDifficulty, speedRef.current),
+      'right',
+    )
     snapshotRef.current = nextSnapshot
     setSnapshot(nextSnapshot)
     scoreRef.current = emptyScore
     setScore(emptyScore)
     setPhase('ready')
-    setMessage('Press start match, then move with W/S or the arrow keys.')
-    inputRef.current = { moveUp: false, moveDown: false }
+    setMessage(getReadyMessage(modeRef.current))
+    inputRef.current = { ...emptyInputState }
   }
 
   function handleDifficultyChange(nextDifficulty: PongDifficulty) {
@@ -240,6 +339,36 @@ export function PongGame() {
     resetMatch(nextDifficulty)
   }
 
+  function handleModeChange(nextMode: ControlMode) {
+    if (nextMode === mode) {
+      return
+    }
+
+    setMode(nextMode)
+    modeRef.current = nextMode
+    resetMatch(nextMode === 'local' ? 'arcade' : difficulty)
+  }
+
+  function handleSpeedChange(nextSpeed: SpeedPreset) {
+    if (nextSpeed === speed) {
+      return
+    }
+
+    setSpeed(nextSpeed)
+    speedRef.current = nextSpeed
+    resetMatch()
+  }
+
+  function handleTargetScoreChange(nextTargetScore: number) {
+    if (nextTargetScore === targetScore) {
+      return
+    }
+
+    setTargetScore(nextTargetScore)
+    targetScoreRef.current = nextTargetScore
+    resetMatch()
+  }
+
   function handlePrimaryAction() {
     if (phase === 'finished') {
       resetMatch()
@@ -247,13 +376,13 @@ export function PongGame() {
     }
 
     if (phase === 'paused') {
-      setMessage('Rally in progress. Keep the ball away from your wall.')
+      setMessage(getLiveMessage(mode))
       setPhase('running')
       return
     }
 
     if (phase === 'ready') {
-      setMessage('Rally in progress. Keep the ball away from your wall.')
+      setMessage(getLiveMessage(mode))
       setPhase('running')
     }
   }
@@ -274,18 +403,69 @@ export function PongGame() {
           <span className="eyebrow">Playable now</span>
           <h2>Realtime motion, keyboard control, and AI pacing are live.</h2>
           <p>
-            Pong now ships as a one-player arcade match with three difficulty
-            presets, pause and restart flow, and a responsive arena.
+            Pong now supports both AI matches and local two-player play with
+            adjustable pace, score targets, touch controls, and a responsive arena.
           </p>
         </div>
-        <div className="mode-switch difficulty-switch" role="tablist" aria-label="Difficulty">
-          {Object.entries(difficultyLabels).map(([value, label]) => (
+        <div className="mode-switch" role="tablist" aria-label="Match mode">
+          {Object.entries(modeLabels).map(([value, label]) => (
             <button
               key={value}
-              className={value === difficulty ? 'segment-button active' : 'segment-button'}
-              onClick={() => handleDifficultyChange(value as PongDifficulty)}
+              className={value === mode ? 'segment-button active' : 'segment-button'}
+              onClick={() => handleModeChange(value as ControlMode)}
               role="tab"
-              aria-selected={value === difficulty}
+              aria-selected={value === mode}
+              type="button"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="pong-settings-grid">
+        {mode === 'computer' ? (
+          <div className="mode-switch difficulty-switch" role="tablist" aria-label="Difficulty">
+            {Object.entries(difficultyLabels).map(([value, label]) => (
+              <button
+                key={value}
+                className={value === difficulty ? 'segment-button active' : 'segment-button'}
+                onClick={() => handleDifficultyChange(value as PongDifficulty)}
+                role="tab"
+                aria-selected={value === difficulty}
+                type="button"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="pong-setting-note">Two-player mode uses equal paddle speed on both sides.</div>
+        )}
+
+        <div className="mode-switch difficulty-switch" role="tablist" aria-label="Score target">
+          {targetScoreOptions.map((option) => (
+            <button
+              key={option}
+              className={option === targetScore ? 'segment-button active' : 'segment-button'}
+              onClick={() => handleTargetScoreChange(option)}
+              role="tab"
+              aria-selected={option === targetScore}
+              type="button"
+            >
+              First to {option}
+            </button>
+          ))}
+        </div>
+
+        <div className="mode-switch difficulty-switch" role="tablist" aria-label="Pace">
+          {Object.entries(speedLabels).map(([value, label]) => (
+            <button
+              key={value}
+              className={value === speed ? 'segment-button active' : 'segment-button'}
+              onClick={() => handleSpeedChange(value as SpeedPreset)}
+              role="tab"
+              aria-selected={value === speed}
               type="button"
             >
               {label}
@@ -303,17 +483,21 @@ export function PongGame() {
             </article>
             <article className="score-card">
               <span className="score-label">Target</span>
-              <strong>{TARGET_SCORE}</strong>
+              <strong>{targetScore}</strong>
             </article>
             <article className="score-card">
-              <span className="score-label">AI</span>
+              <span className="score-label">{mode === 'computer' ? 'AI' : 'Player 2'}</span>
               <strong>{score.ai}</strong>
             </article>
           </div>
 
           <div className="status-panel" aria-live="polite">
             <strong>{message}</strong>
-            <span>Controls: `W` / `S`, arrow keys, and `Space` to pause or resume.</span>
+            <span>
+              {mode === 'computer'
+                ? 'Controls: W / S or arrow keys, plus Space to pause or resume.'
+                : 'Controls: Player 1 uses W / S, Player 2 uses arrow keys, and Space pauses.'}
+            </span>
           </div>
 
           <div className="action-row">
@@ -377,13 +561,53 @@ export function PongGame() {
               ) : null}
             </div>
           </div>
+
+          <div className="pong-touch-controls" aria-label="Touch controls">
+            <div className="touch-paddle-controls">
+              <span>Player 1</span>
+              <div className="touch-buttons">
+                <TouchButton
+                  label="Up"
+                  onPressChange={(pressed) => {
+                    inputRef.current.playerUp = pressed
+                  }}
+                />
+                <TouchButton
+                  label="Down"
+                  onPressChange={(pressed) => {
+                    inputRef.current.playerDown = pressed
+                  }}
+                />
+              </div>
+            </div>
+            {mode === 'local' ? (
+              <div className="touch-paddle-controls">
+                <span>Player 2</span>
+                <div className="touch-buttons">
+                  <TouchButton
+                    label="Up"
+                    onPressChange={(pressed) => {
+                      inputRef.current.opponentUp = pressed
+                    }}
+                  />
+                  <TouchButton
+                    label="Down"
+                    onPressChange={(pressed) => {
+                      inputRef.current.opponentDown = pressed
+                    }}
+                  />
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
 
         <aside className="pong-side">
           <article className="game-detail">
             <strong>Current ruleset</strong>
             <ul className="rule-list">
-              <li>First to five points wins the match.</li>
+              <li>Pick between AI play or local two-player before you start the match.</li>
+              <li>Score targets of 5, 7, or 11 change how long each match runs.</li>
               <li>The AI gets faster and cleaner as you raise the difficulty.</li>
               <li>Each paddle contact adds a little pace and changes the ball angle.</li>
             </ul>
@@ -394,11 +618,60 @@ export function PongGame() {
             <ul className="rule-list">
               <li>Meet the ball with the upper or lower edge of your paddle to change its angle.</li>
               <li>Shorter rallies are easier on expert, so reset your position after every return.</li>
-              <li>Use the pause flow between long rallies if you need to break the AI rhythm.</li>
+              <li>In two-player mode, recover to the center after each shot instead of chasing immediately.</li>
+              <li>Use the pause flow between long rallies if you need to reset the pace.</li>
             </ul>
           </article>
         </aside>
       </div>
     </article>
   )
+}
+
+type TouchButtonProps = {
+  label: string
+  onPressChange: (pressed: boolean) => void
+}
+
+function TouchButton({ label, onPressChange }: TouchButtonProps) {
+  return (
+    <button
+      className="touch-button"
+      onPointerCancel={() => onPressChange(false)}
+      onPointerDown={() => onPressChange(true)}
+      onPointerLeave={() => onPressChange(false)}
+      onPointerUp={() => onPressChange(false)}
+      type="button"
+    >
+      {label}
+    </button>
+  )
+}
+
+function getMatchConfig(
+  mode: ControlMode,
+  difficulty: PongDifficulty,
+  speed: SpeedPreset,
+) {
+  const baseConfig = mode === 'local' ? difficultyConfig.arcade : difficultyConfig[difficulty]
+  const multiplier = speedMultiplier[speed]
+
+  return {
+    ...baseConfig,
+    paddleSpeed: baseConfig.paddleSpeed * (mode === 'local' ? 1 : 1),
+    ballSpeed: baseConfig.ballSpeed * multiplier,
+    maxBallSpeed: baseConfig.maxBallSpeed * multiplier,
+  }
+}
+
+function getReadyMessage(mode: ControlMode) {
+  return mode === 'computer'
+    ? 'Press start match, then move with W/S or the arrow keys.'
+    : 'Press start match. Player 1 uses W/S and Player 2 uses arrow keys.'
+}
+
+function getLiveMessage(mode: ControlMode) {
+  return mode === 'computer'
+    ? 'Rally in progress. Keep the ball away from your wall.'
+    : 'Rally in progress. Outmaneuver the other paddle and guard your side.'
 }

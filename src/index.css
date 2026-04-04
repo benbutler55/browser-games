@@ -740,6 +740,29 @@ img {
   width: fit-content;
 }
 
+.pong-settings-grid,
+.pong-touch-controls,
+.touch-buttons {
+  display: grid;
+  gap: 12px;
+}
+
+.pong-settings-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pong-setting-note {
+  display: grid;
+  place-items: center;
+  min-height: 56px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 251, 242, 0.78);
+  color: var(--text-soft);
+  text-align: center;
+}
+
 .pong-arena-wrap {
   padding: 12px;
   border: 1px solid var(--border);
@@ -830,6 +853,42 @@ img {
   color: rgba(255, 251, 241, 0.92);
   text-align: center;
   backdrop-filter: blur(8px);
+}
+
+.pong-touch-controls {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.touch-paddle-controls {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 251, 242, 0.78);
+}
+
+.touch-paddle-controls span {
+  color: var(--text-soft);
+  font-weight: 700;
+}
+
+.touch-buttons {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.touch-button {
+  min-height: 56px;
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(246, 238, 226, 0.92));
+  color: var(--heading);
+  font-weight: 700;
+}
+
+.touch-button:active {
+  transform: translateY(1px);
+  background: var(--accent-soft);
 }
 
 .solitaire-actions {
@@ -1329,6 +1388,8 @@ img {
   .solitaire-deck-row,
   .solitaire-foundations,
   .custom-board-controls,
+  .pong-settings-grid,
+  .pong-touch-controls,
   .minesweeper-side,
   .solitaire-side {
     grid-template-columns: 1fr;

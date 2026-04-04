@@ -1,5 +1,6 @@
 export type PongDifficulty = 'casual' | 'arcade' | 'expert'
 export type PaddleSide = 'player' | 'ai'
+export type ControlMode = 'computer' | 'local'
 
 export type PongSnapshot = {
   playerY: number
@@ -11,8 +12,10 @@ export type PongSnapshot = {
 }
 
 export type InputState = {
-  moveUp: boolean
-  moveDown: boolean
+  playerUp: boolean
+  playerDown: boolean
+  opponentUp: boolean
+  opponentDown: boolean
 }
 
 export type DifficultyConfig = {
@@ -81,18 +84,24 @@ export function advanceSnapshot(
   deltaSeconds: number,
   config: DifficultyConfig,
   input: InputState,
+  controlMode: ControlMode,
 ) {
-  const playerDirection = Number(input.moveDown) - Number(input.moveUp)
+  const playerDirection = Number(input.playerDown) - Number(input.playerUp)
   const playerY = clamp(
     snapshot.playerY + playerDirection * config.paddleSpeed * deltaSeconds,
     0,
     BOARD_HEIGHT - PADDLE_HEIGHT,
   )
 
-  const aiCenter = snapshot.aiY + PADDLE_HEIGHT / 2
-  const ballCenter = snapshot.ballY + BALL_SIZE / 2 + snapshot.velocityY * config.aiBias * deltaSeconds
-  const aiStep = clamp(ballCenter - aiCenter, -config.aiSpeed * deltaSeconds, config.aiSpeed * deltaSeconds)
-  const aiY = clamp(snapshot.aiY + aiStep, 0, BOARD_HEIGHT - PADDLE_HEIGHT)
+  const aiY =
+    controlMode === 'local'
+      ? clamp(
+          snapshot.aiY +
+            (Number(input.opponentDown) - Number(input.opponentUp)) * config.paddleSpeed * deltaSeconds,
+          0,
+          BOARD_HEIGHT - PADDLE_HEIGHT,
+        )
+      : moveAi(snapshot, deltaSeconds, config)
 
   let nextSnapshot: PongSnapshot = {
     ...snapshot,
@@ -135,6 +144,19 @@ export function advanceSnapshot(
   }
 
   return { snapshot: nextSnapshot, scorer: null }
+}
+
+function moveAi(snapshot: PongSnapshot, deltaSeconds: number, config: DifficultyConfig) {
+  const aiCenter = snapshot.aiY + PADDLE_HEIGHT / 2
+  const ballCenter =
+    snapshot.ballY + BALL_SIZE / 2 + snapshot.velocityY * config.aiBias * deltaSeconds
+  const aiStep = clamp(
+    ballCenter - aiCenter,
+    -config.aiSpeed * deltaSeconds,
+    config.aiSpeed * deltaSeconds,
+  )
+
+  return clamp(snapshot.aiY + aiStep, 0, BOARD_HEIGHT - PADDLE_HEIGHT)
 }
 
 function shouldBounce(snapshot: PongSnapshot, paddleY: number, paddleX: number) {
