@@ -31,7 +31,7 @@ This repository hosts the source code for a browser-based games collection that 
 - Keep shared UI and shared logic outside individual game folders when it improves reuse.
 - Run `npm run lint` and `npm run build` after meaningful code changes.
 - Keep both GitHub workflows current and prefer Node 24-compatible actions/runtime settings.
-- When the user asks for it, ensure completed changes are committed and pushed to the remote repository.
+- Ensure completed changes are committed and pushed to the remote repository without waiting for the user to ask.
 
 ## Current status
 

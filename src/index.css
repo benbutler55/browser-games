@@ -591,7 +591,7 @@ img {
 
 .minesweeper-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  grid-template-columns: 1fr;
   gap: 18px;
   align-items: start;
 }
@@ -605,7 +605,7 @@ img {
 
 .solitaire-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+  grid-template-columns: 1fr;
   gap: 18px;
   align-items: start;
 }
@@ -622,6 +622,10 @@ img {
   gap: 18px;
 }
 
+.minesweeper-side {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .pong-main,
 .pong-side {
   display: grid;
@@ -632,6 +636,10 @@ img {
 .solitaire-side {
   display: grid;
   gap: 18px;
+}
+
+.solitaire-side {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .score-grid {
@@ -787,7 +795,7 @@ img {
 }
 
 .solitaire-board-wrap {
-  overflow-x: auto;
+  overflow: visible;
   padding: 12px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
@@ -797,7 +805,7 @@ img {
 .solitaire-board {
   display: grid;
   gap: 20px;
-  min-width: 760px;
+  min-width: 0;
 }
 
 .solitaire-top-row,
@@ -942,7 +950,7 @@ img {
 }
 
 .minesweeper-board-wrap {
-  overflow-x: auto;
+  overflow: visible;
   padding: 12px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
@@ -952,13 +960,14 @@ img {
 .minesweeper-board {
   display: grid;
   gap: 6px;
-  width: max-content;
+  width: 100%;
+  min-width: 0;
 }
 
 .mine-cell {
   display: grid;
   place-items: center;
-  width: 2.3rem;
+  width: 100%;
   aspect-ratio: 1;
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -1168,7 +1177,9 @@ img {
   .solitaire-meta-grid,
   .solitaire-top-row,
   .solitaire-deck-row,
-  .solitaire-foundations {
+  .solitaire-foundations,
+  .minesweeper-side,
+  .solitaire-side {
     grid-template-columns: 1fr;
   }
 
@@ -1203,10 +1214,6 @@ img {
 
   .pong-arena {
     min-height: 260px;
-  }
-
-  .solitaire-board {
-    min-width: 680px;
   }
 }
 

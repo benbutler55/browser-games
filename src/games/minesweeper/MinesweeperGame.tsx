@@ -235,7 +235,7 @@ export function MinesweeperGame() {
               role="grid"
               aria-label="Minesweeper board"
               style={{
-                gridTemplateColumns: `repeat(${config.columns}, minmax(2.3rem, 2.3rem))`,
+                gridTemplateColumns: `repeat(${config.columns}, minmax(0, 1fr))`,
               }}
             >
               {board.map((cell, index) => {
