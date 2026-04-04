@@ -11,7 +11,7 @@ Browser Games is a static web app for hosting a growing collection of polished, 
 
 ## Current status
 
-The repo now contains the shared application foundation plus three playable games:
+The repo now contains the shared application foundation plus all four initial playable games:
 
 - shared app shell and navigation
 - game registry for future expansion
@@ -19,7 +19,7 @@ The repo now contains the shared application foundation plus three playable game
 - a fully playable `Pong` game with keyboard controls, AI difficulty levels, pause flow, and scoring
 - a fully playable `Noughts and Crosses` game with local multiplayer and computer mode
 - a fully playable `Minesweeper` game with three difficulties, first-click safety, timer tracking, and local best times
-- per-game overview pages for the remaining planned lineup
+- a fully playable `Solitaire` game with Klondike draw-one rules and click-to-move interactions
 - responsive styling and static-hosting-safe routing
 - CI and GitHub Pages deployment workflows in `.github/workflows/`
 
@@ -78,9 +78,9 @@ src/
 
 ### Phase 4 - Rich interaction
 
-1. Implement Solitaire as `Klondike draw-one`.
-2. Add move validation helpers and robust state transitions.
-3. Layer in click-to-move first, then richer interaction patterns.
+1. Reuse Solitaire's move validation and pile-state patterns for future card-based games.
+2. Continue refining the click-to-move interaction model and accessibility.
+3. Consider follow-up features like undo, hints, drag support, and draw-three mode.
 
 ## Development
 

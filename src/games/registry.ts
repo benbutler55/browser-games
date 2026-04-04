@@ -4,6 +4,7 @@ import { NoughtsAndCrossesGame } from './noughts-and-crosses/NoughtsAndCrossesGa
 import { NoughtsAndCrossesPreview } from './noughts-and-crosses/NoughtsAndCrossesPreview'
 import { PongGame } from './pong/PongGame'
 import { PongPreview } from './pong/PongPreview'
+import { SolitaireGame } from './solitaire/SolitaireGame'
 import { SolitairePreview } from './solitaire/SolitairePreview'
 import type { GameDefinition } from './types'
 
@@ -69,19 +70,20 @@ export const games: GameDefinition[] = [
     slug: 'solitaire',
     name: 'Solitaire',
     genre: 'Card game',
-    status: 'Planned',
+    status: 'Playable',
     description:
       'Klondike draw-one with approachable card movement, clear pile states, and room for richer interaction later.',
     tags: ['Card logic', 'Drag and drop', 'State validation'],
     highlights: [
-      'Klondike draw-one for the first shipped variant.',
+      'Klondike draw-one is now live with stock, waste, foundations, and tableau rules.',
       'Move validation lives in pure logic helpers where possible.',
-      'Interaction model is built with future undo and hint support in mind.',
+      'This first pass focuses on dependable click-to-move interactions before drag support.',
     ],
     controls: 'Click-to-move first, drag support layered in with care.',
     initialMode: 'Classic Klondike draw-one with stock, waste, foundations, and tableau.',
     expansionPath: 'Undo, hints, draw-three mode, scoring, and themed decks.',
     preview: SolitairePreview,
+    playable: SolitaireGame,
   },
 ]
 

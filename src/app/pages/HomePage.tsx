@@ -34,9 +34,9 @@ const checklist = [
     title: 'Phase 4 - Rich Interaction',
     summary: 'Finish the first wave with card movement, validation, and polish.',
     items: [
-      'Build Klondike draw-one Solitaire.',
-      'Support drag, click-to-move, undo-friendly state transitions.',
-      'Refine onboarding, rules panels, and end-state feedback.',
+      'Ship Klondike draw-one Solitaire with click-to-move play and validated pile rules.',
+      'Use the first pass to prove card-state transitions before drag support.',
+      'Refine onboarding, undo, hints, and end-state feedback.',
     ],
   },
 ]
@@ -46,7 +46,7 @@ export function HomePage() {
     <>
       <section className="hero">
         <div className="panel hero-copy">
-          <span className="eyebrow">Three playable games live</span>
+          <span className="eyebrow">Full first wave playable</span>
           <h1>Modern browser games, built to grow one title at a time.</h1>
           <p>
             This repo is set up as a static React app with a shared shell, a
@@ -63,7 +63,7 @@ export function HomePage() {
           </div>
           <div className="hero-grid">
             <article className="stat-card">
-              <strong>3 / 4</strong>
+              <strong>4 / 4</strong>
               <p>Initial games now playable in the first release wave.</p>
             </article>
             <article className="stat-card">
