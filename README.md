@@ -11,11 +11,12 @@ Browser Games is a static web app for hosting a growing collection of polished, 
 
 ## Current status
 
-The repo now contains the shared application foundation plus two playable games:
+The repo now contains the shared application foundation plus three playable games:
 
 - shared app shell and navigation
 - game registry for future expansion
 - home page with implementation roadmap
+- a fully playable `Pong` game with keyboard controls, AI difficulty levels, pause flow, and scoring
 - a fully playable `Noughts and Crosses` game with local multiplayer and computer mode
 - a fully playable `Minesweeper` game with three difficulties, first-click safety, timer tracking, and local best times
 - per-game overview pages for the remaining planned lineup
@@ -71,9 +72,9 @@ src/
 
 ### Phase 3 - Realtime systems
 
-1. Implement Pong with animation, collision logic, scoring, and AI.
-2. Add keyboard-first controls and responsive game scaling.
-3. Refine pause and reset flows.
+1. Reuse Pong's animation, scoring, and pause patterns for later realtime interactions.
+2. Continue refining responsive playfield behaviour and input polish.
+3. Prepare any shared timing or motion helpers that help the remaining games.
 
 ### Phase 4 - Rich interaction
 

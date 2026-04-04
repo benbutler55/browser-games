@@ -2,6 +2,7 @@ import { MinesweeperGame } from './minesweeper/MinesweeperGame'
 import { MinesweeperPreview } from './minesweeper/MinesweeperPreview'
 import { NoughtsAndCrossesGame } from './noughts-and-crosses/NoughtsAndCrossesGame'
 import { NoughtsAndCrossesPreview } from './noughts-and-crosses/NoughtsAndCrossesPreview'
+import { PongGame } from './pong/PongGame'
 import { PongPreview } from './pong/PongPreview'
 import { SolitairePreview } from './solitaire/SolitairePreview'
 import type { GameDefinition } from './types'
@@ -11,19 +12,20 @@ export const games: GameDefinition[] = [
     slug: 'pong',
     name: 'Pong',
     genre: 'Arcade',
-    status: 'Planned',
+    status: 'Playable',
     description:
       'A responsive paddle game with keyboard controls, a paced AI opponent, and a clean single-screen layout.',
     tags: ['Realtime', 'Keyboard', 'Canvas-friendly'],
     highlights: [
-      'Single-player vs AI for the first version.',
-      'Shared pause, restart, score, and difficulty controls.',
-      'Logic split cleanly from rendering for future polish and testing.',
+      'Single-player vs AI is now live with three difficulty levels.',
+      'Shared pause, restart, score, and between-serve controls are in place.',
+      'Motion helpers are isolated from the view for future polish and testing.',
     ],
     controls: 'Keyboard-first, with optional touch controls in a later pass.',
     initialMode: 'One-player arcade match against a simple AI opponent.',
     expansionPath: 'Two-player local mode, touch input, match presets, and sound design.',
     preview: PongPreview,
+    playable: PongGame,
   },
   {
     slug: 'minesweeper',
