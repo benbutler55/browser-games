@@ -663,7 +663,34 @@ img {
 }
 
 .mines-meta-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: stretch;
+}
+
+.custom-board-controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.custom-field {
+  display: grid;
+  gap: 6px;
+}
+
+.custom-field span {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.custom-field input {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: rgba(255, 251, 242, 0.88);
+  color: var(--heading);
 }
 
 .solitaire-meta-grid {
@@ -1301,6 +1328,7 @@ img {
   .solitaire-top-row,
   .solitaire-deck-row,
   .solitaire-foundations,
+  .custom-board-controls,
   .minesweeper-side,
   .solitaire-side {
     grid-template-columns: 1fr;

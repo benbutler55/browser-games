@@ -18,7 +18,7 @@ The repo now contains the shared application foundation plus all four initial pl
 - gameplay-first home page that links directly into the games
 - a fully playable `Pong` game with keyboard controls, AI difficulty levels, pause flow, and scoring
 - a fully playable `Noughts and Crosses` game with local multiplayer and computer mode
-- a fully playable `Minesweeper` game with three difficulties, first-click safety, timer tracking, and local best times
+- a fully playable `Minesweeper` game with preset and custom boards, chord reveal, timer tracking, and local stats
 - a fully playable `Solitaire` game with Klondike draw-one rules and click-to-move interactions
 - responsive styling and static-hosting-safe routing
 - CI and GitHub Pages deployment workflows in `.github/workflows/`

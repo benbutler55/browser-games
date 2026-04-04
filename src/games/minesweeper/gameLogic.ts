@@ -1,4 +1,4 @@
-export type DifficultyKey = 'beginner' | 'intermediate' | 'expert'
+export type DifficultyKey = 'beginner' | 'intermediate' | 'expert' | 'custom'
 
 export type DifficultyConfig = {
   rows: number
@@ -13,7 +13,7 @@ export type Cell = {
   isFlagged: boolean
 }
 
-export const difficultyConfig: Record<DifficultyKey, DifficultyConfig> = {
+export const difficultyConfig: Record<Exclude<DifficultyKey, 'custom'>, DifficultyConfig> = {
   beginner: {
     rows: 9,
     columns: 9,
@@ -134,7 +134,7 @@ export function getFlagsPlaced(board: Cell[]) {
   return board.filter((cell) => cell.isFlagged).length
 }
 
-function getNeighborIndices(index: number, rows: number, columns: number) {
+export function getNeighborIndices(index: number, rows: number, columns: number) {
   const row = Math.floor(index / columns)
   const column = index % columns
   const neighbors: number[] = []

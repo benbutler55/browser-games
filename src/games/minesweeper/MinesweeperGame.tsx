@@ -4,6 +4,7 @@ import {
   createBoard,
   difficultyConfig,
   getFlagsPlaced,
+  getNeighborIndices,
   hasWon,
   revealAllMines,
   revealCells,
@@ -17,17 +18,34 @@ type Phase = 'idle' | 'playing' | 'won' | 'lost'
 type InputTool = 'reveal' | 'flag'
 
 type BestTimes = Record<DifficultyKey, number | null>
+type CustomConfig = { rows: number; columns: number; mines: number }
+type Stats = { wins: number; losses: number; currentStreak: number; bestStreak: number }
 
 const difficultyLabels: Record<DifficultyKey, string> = {
   beginner: 'Beginner',
   intermediate: 'Intermediate',
   expert: 'Expert',
+  custom: 'Custom',
 }
 
 const defaultBestTimes: BestTimes = {
   beginner: null,
   intermediate: null,
   expert: null,
+  custom: null,
+}
+
+const defaultCustomConfig: CustomConfig = {
+  rows: 12,
+  columns: 18,
+  mines: 30,
+}
+
+const defaultStats: Stats = {
+  wins: 0,
+  losses: 0,
+  currentStreak: 0,
+  bestStreak: 0,
 }
 
 export function MinesweeperGame() {
@@ -36,11 +54,16 @@ export function MinesweeperGame() {
     'beginner',
   )
   const [tool, setTool] = useLocalStorage<InputTool>('minesweeper-tool', 'reveal')
+  const [customConfig, setCustomConfig] = useLocalStorage<CustomConfig>(
+    'minesweeper-custom-config',
+    defaultCustomConfig,
+  )
   const [bestTimes, setBestTimes] = useLocalStorage<BestTimes>(
     'minesweeper-best-times',
     defaultBestTimes,
   )
-  const config = difficultyConfig[difficulty]
+  const [stats, setStats] = useLocalStorage<Stats>('minesweeper-stats', defaultStats)
+  const config = getConfigForDifficulty(difficulty, customConfig)
   const [board, setBoard] = useState<Cell[]>(() => createBoard(config.rows, config.columns))
   const [phase, setPhase] = useState<Phase>('idle')
   const [elapsedSeconds, setElapsedSeconds] = useState(0)
@@ -68,10 +91,10 @@ export function MinesweeperGame() {
         ? 'Mine triggered. Reset and try a new route.'
         : phase === 'idle'
           ? 'First reveal is always safe and opens a clean pocket.'
-          : 'Board is live. Reveal carefully and use flags to track mines.'
+          : 'Board is live. Click revealed numbers to chord when adjacent flags match.'
 
   function resetBoard(nextDifficulty = difficulty) {
-    const nextConfig = difficultyConfig[nextDifficulty]
+    const nextConfig = getConfigForDifficulty(nextDifficulty, customConfig)
     setBoard(createBoard(nextConfig.rows, nextConfig.columns))
     setPhase('idle')
     setElapsedSeconds(0)
@@ -90,6 +113,28 @@ export function MinesweeperGame() {
         [difficulty]: nextTime,
       }
     })
+  }
+
+  function recordWin(nextTime: number) {
+    updateBestTime(nextTime)
+    setStats((currentStats) => {
+      const nextStreak = currentStats.currentStreak + 1
+
+      return {
+        wins: currentStats.wins + 1,
+        losses: currentStats.losses,
+        currentStreak: nextStreak,
+        bestStreak: Math.max(currentStats.bestStreak, nextStreak),
+      }
+    })
+  }
+
+  function recordLoss() {
+    setStats((currentStats) => ({
+      ...currentStats,
+      losses: currentStats.losses + 1,
+      currentStreak: 0,
+    }))
   }
 
   function applyReveal(index: number) {
@@ -112,6 +157,7 @@ export function MinesweeperGame() {
     if (chosenCell.hasMine) {
       setBoard(revealAllMines(workingBoard))
       setPhase('lost')
+      recordLoss()
       return
     }
 
@@ -122,7 +168,56 @@ export function MinesweeperGame() {
     setPhase(nextPhase)
 
     if (nextPhase === 'won') {
-      updateBestTime(elapsedSeconds)
+      recordWin(elapsedSeconds)
+    }
+  }
+
+  function applyChord(index: number) {
+    if (phase !== 'playing') {
+      return
+    }
+
+    const chosenCell = board[index]
+
+    if (!chosenCell.isRevealed || chosenCell.adjacentMines === 0) {
+      return
+    }
+
+    const neighborIndices = getNeighborIndices(index, config.rows, config.columns)
+    const flaggedNeighbors = neighborIndices.filter((neighborIndex) => board[neighborIndex].isFlagged)
+
+    if (flaggedNeighbors.length !== chosenCell.adjacentMines) {
+      return
+    }
+
+    const hiddenNeighbors = neighborIndices.filter((neighborIndex) => {
+      const neighbor = board[neighborIndex]
+      return !neighbor.isRevealed && !neighbor.isFlagged
+    })
+
+    if (hiddenNeighbors.length === 0) {
+      return
+    }
+
+    if (hiddenNeighbors.some((neighborIndex) => board[neighborIndex].hasMine)) {
+      setBoard(revealAllMines(board))
+      setPhase('lost')
+      recordLoss()
+      return
+    }
+
+    let nextBoard = board
+
+    for (const neighborIndex of hiddenNeighbors) {
+      nextBoard = revealCells(nextBoard, neighborIndex, config.rows, config.columns)
+    }
+
+    const nextPhase = hasWon(nextBoard) ? 'won' : 'playing'
+    setBoard(nextBoard)
+    setPhase(nextPhase)
+
+    if (nextPhase === 'won') {
+      recordWin(elapsedSeconds)
     }
   }
 
@@ -140,6 +235,11 @@ export function MinesweeperGame() {
       return
     }
 
+    if (board[index].isRevealed) {
+      applyChord(index)
+      return
+    }
+
     applyReveal(index)
   }
 
@@ -150,6 +250,31 @@ export function MinesweeperGame() {
 
     setDifficulty(nextDifficulty)
     resetBoard(nextDifficulty)
+  }
+
+  function handleCustomConfigChange(
+    field: keyof CustomConfig,
+    value: string,
+  ) {
+    const nextValue = Number.parseInt(value, 10)
+
+    setCustomConfig((currentConfig) => {
+      const rawConfig = {
+        ...currentConfig,
+        [field]: Number.isNaN(nextValue) ? currentConfig[field] : nextValue,
+      }
+
+      return normalizeCustomConfig(rawConfig)
+    })
+  }
+
+  function handleApplyCustomBoard() {
+    const normalizedConfig = normalizeCustomConfig(customConfig)
+    setCustomConfig(normalizedConfig)
+    setDifficulty('custom')
+    setBoard(createBoard(normalizedConfig.rows, normalizedConfig.columns))
+    setPhase('idle')
+    setElapsedSeconds(0)
   }
 
   return (
@@ -163,7 +288,7 @@ export function MinesweeperGame() {
             local best times, and both reveal and flag interactions.
           </p>
         </div>
-        <div className="mode-switch" role="tablist" aria-label="Difficulty">
+        <div className="mode-switch difficulty-switch" role="tablist" aria-label="Difficulty">
           {Object.entries(difficultyLabels).map(([value, label]) => (
             <button
               key={value}
@@ -177,6 +302,43 @@ export function MinesweeperGame() {
             </button>
           ))}
         </div>
+        {difficulty === 'custom' ? (
+          <div className="custom-board-controls">
+            <label className="custom-field">
+              <span>Rows</span>
+              <input
+                max={24}
+                min={8}
+                onChange={(event) => handleCustomConfigChange('rows', event.target.value)}
+                type="number"
+                value={customConfig.rows}
+              />
+            </label>
+            <label className="custom-field">
+              <span>Columns</span>
+              <input
+                max={30}
+                min={8}
+                onChange={(event) => handleCustomConfigChange('columns', event.target.value)}
+                type="number"
+                value={customConfig.columns}
+              />
+            </label>
+            <label className="custom-field">
+              <span>Mines</span>
+              <input
+                max={Math.max(customConfig.rows * customConfig.columns - 10, 10)}
+                min={1}
+                onChange={(event) => handleCustomConfigChange('mines', event.target.value)}
+                type="number"
+                value={customConfig.mines}
+              />
+            </label>
+            <button className="ghost-button" onClick={handleApplyCustomBoard} type="button">
+              Apply custom board
+            </button>
+          </div>
+        ) : null}
       </div>
 
       <div className="minesweeper-layout">
@@ -193,6 +355,10 @@ export function MinesweeperGame() {
             <article className="score-card">
               <span className="score-label">Best</span>
               <strong>{bestTime === null ? '--' : `${bestTime}s`}</strong>
+            </article>
+            <article className="score-card">
+              <span className="score-label">Streak</span>
+              <strong>{stats.currentStreak}</strong>
             </article>
           </div>
 
@@ -274,18 +440,18 @@ export function MinesweeperGame() {
           <article className="game-detail">
             <strong>Current ruleset</strong>
             <ul className="rule-list">
-              <li>Beginner, intermediate, and expert boards are available.</li>
+              <li>Beginner, intermediate, expert, and custom boards are available.</li>
               <li>The first reveal protects the clicked cell and its immediate neighbors.</li>
-              <li>Zero-value cells expand automatically to open the board faster.</li>
+              <li>Click a revealed number to chord when its adjacent flags match the number.</li>
             </ul>
           </article>
 
           <article className="game-detail">
-            <strong>Board-reading tips</strong>
+            <strong>Stats and tips</strong>
             <ul className="rule-list">
+              <li>Wins: {stats.wins}, losses: {stats.losses}, best streak: {stats.bestStreak}.</li>
               <li>Flags are only markers for you, so keep the count honest as you reason through the board.</li>
               <li>Open corners created by zero-value cells first; they reveal the most information quickly.</li>
-              <li>If a number is already satisfied by its surrounding flags, the remaining hidden neighbors are safe.</li>
             </ul>
           </article>
         </aside>
@@ -318,4 +484,25 @@ function getCellContent(cell: Cell) {
   }
 
   return cell.adjacentMines > 0 ? cell.adjacentMines : ''
+}
+
+function getConfigForDifficulty(difficulty: DifficultyKey, customConfig: CustomConfig) {
+  return difficulty === 'custom' ? normalizeCustomConfig(customConfig) : difficultyConfig[difficulty]
+}
+
+function normalizeCustomConfig(config: CustomConfig) {
+  const rows = clamp(config.rows, 8, 24)
+  const columns = clamp(config.columns, 8, 30)
+  const maxMines = Math.max(rows * columns - 10, 10)
+  const mines = clamp(config.mines, 1, maxMines)
+
+  return {
+    rows,
+    columns,
+    mines,
+  }
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max)
 }

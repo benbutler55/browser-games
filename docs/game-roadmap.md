@@ -13,12 +13,11 @@ This document tracks the next round of improvements for the current game lineup.
 
 ## Minesweeper
 
-1. Add custom board sizes and mine counts.
-2. Add chord / quick-reveal behavior when adjacent flags match a revealed number.
-3. Track richer local stats such as wins, losses, and streaks.
-4. Improve touch interactions, including a clearer reveal/flag flow.
-5. Add more logic-level test coverage around generation, reveal, and win conditions.
-6. Add visual error feedback for over-flagging or impossible board reads.
+1. Improve touch interactions, including a clearer reveal/flag flow.
+2. Add more logic-level test coverage around generation, reveal, chord actions, and win conditions.
+3. Add visual error feedback for over-flagging or impossible board reads.
+4. Add richer stats views such as per-difficulty splits and longest solve sessions.
+5. Consider a lightweight hint system for stalled boards.
 
 ## Noughts and Crosses
 
@@ -49,7 +48,7 @@ This document tracks the next round of improvements for the current game lineup.
 
 ## Suggested Next Round
 
-1. `Minesweeper`: custom boards, chord behavior, and richer stat tracking.
-2. `Pong`: touch controls, local two-player mode, and stronger match settings.
-3. `Solitaire`: undo, hints, and draw-three support.
-4. `Noughts and Crosses`: AI difficulty tiers and keyboard navigation.
+1. `Pong`: touch controls, local two-player mode, and stronger match settings.
+2. `Solitaire`: undo, hints, and draw-three support.
+3. `Noughts and Crosses`: AI difficulty tiers and keyboard navigation.
+4. `Minesweeper`: touch polish, deeper stats, and hint/error feedback.
