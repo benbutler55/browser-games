@@ -6,11 +6,13 @@ type GameCardProps = {
 }
 
 export function GameCard({ game }: GameCardProps) {
+  const statusClassName = game.status.toLowerCase().replace(/\s+/g, '-')
+
   return (
     <Link to={`/games/${game.slug}`} className="game-card">
       <div className="game-card-header">
         <div>
-          <div className="status-chip planned">{game.status}</div>
+          <div className={`status-chip ${statusClassName}`}>{game.status}</div>
           <h3>{game.name}</h3>
         </div>
         <span className="tag">{game.genre}</span>
@@ -34,7 +36,7 @@ export function GameCard({ game }: GameCardProps) {
 
       <div className="game-card-footer">
         <span className="meta-note">Route: /#/games/{game.slug}</span>
-        <span className="ghost-button">Open brief</span>
+        <span className="ghost-button">{game.playable ? 'Play now' : 'Open brief'}</span>
       </div>
     </Link>
   )

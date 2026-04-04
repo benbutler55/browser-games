@@ -5,32 +5,36 @@ type GameFrameProps = {
 }
 
 export function GameFrame({ game }: GameFrameProps) {
-  const Preview = game.preview
+  const Experience = game.playable ?? game.preview
+  const hasPlayableBuild = Boolean(game.playable)
+  const statusClassName = game.status.toLowerCase().replace(/\s+/g, '-')
 
   return (
     <section className="game-frame">
       <div className="frame-header">
         <div>
           <div className="tag-row">
-            <span className="status-chip planned">{game.status}</span>
+            <span className={`status-chip ${statusClassName}`}>{game.status}</span>
             <span className="status-chip framework">{game.genre}</span>
           </div>
           <h1>{game.name}</h1>
           <p>{game.description}</p>
         </div>
         <div className="frame-actions">
-          <button className="primary-button" type="button">
-            Playable build coming soon
-          </button>
-          <button className="ghost-button" type="button">
+          <a className="primary-button" href="#game-experience">
+            {hasPlayableBuild ? 'Jump to playable build' : 'Preview planned build'}
+          </a>
+          <a className="ghost-button" href="#game-details">
             Rules and controls
-          </button>
+          </a>
         </div>
       </div>
 
-      <Preview />
+      <div id="game-experience">
+        <Experience />
+      </div>
 
-      <div className="details-grid">
+      <div className="details-grid" id="game-details">
         <article className="game-detail">
           <strong>Implementation goals</strong>
           <ul className="rule-list">
@@ -41,7 +45,7 @@ export function GameFrame({ game }: GameFrameProps) {
         </article>
 
         <article className="game-detail">
-          <strong>Planned first-version details</strong>
+          <strong>{hasPlayableBuild ? 'Current build details' : 'Planned first-version details'}</strong>
           <dl>
             <div>
               <dt>Controls</dt>

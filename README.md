@@ -11,13 +11,15 @@ Browser Games is a static web app for hosting a growing collection of polished, 
 
 ## Current status
 
-The repo currently contains the application foundation rather than fully playable games:
+The repo now contains the shared application foundation plus the first playable game:
 
 - shared app shell and navigation
 - game registry for future expansion
 - home page with implementation roadmap
-- per-game overview pages for the initial lineup
+- a fully playable `Noughts and Crosses` game with local multiplayer and computer mode
+- per-game overview pages for the remaining planned lineup
 - responsive styling and static-hosting-safe routing
+- GitHub Pages deployment workflow in `.github/workflows/deploy.yml`
 
 ## Initial game lineup
 
@@ -62,9 +64,9 @@ src/
 
 ### Phase 2 - First playable games
 
-1. Implement Noughts and Crosses as the first complete playable game.
-2. Implement Minesweeper with difficulty presets and first-click safety.
-3. Add shared restart, status, and settings patterns.
+1. Implement Minesweeper with difficulty presets and first-click safety.
+2. Reuse the Noughts and Crosses board, score, and status patterns where useful.
+3. Add shared restart, status, and settings patterns across games.
 
 ### Phase 3 - Realtime systems
 
@@ -95,3 +97,9 @@ npm run build
 ## Deployment
 
 This project is intended to be pushed to GitHub and served via GitHub Pages as a static site. No server-side runtime is required.
+
+- GitHub Actions workflow: `.github/workflows/deploy.yml`
+- Deployment target: GitHub Pages
+- Trigger: push to `main` or manual workflow dispatch
+
+If Pages is not already configured in the repository settings, set the site source to `GitHub Actions`.

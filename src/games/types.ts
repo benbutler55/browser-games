@@ -4,7 +4,7 @@ export type GameDefinition = {
   slug: string
   name: string
   genre: string
-  status: 'Planned' | 'Framework Ready'
+  status: 'Planned' | 'Framework Ready' | 'Playable'
   description: string
   tags: string[]
   highlights: string[]
@@ -12,4 +12,5 @@ export type GameDefinition = {
   initialMode: string
   expansionPath: string
   preview: ComponentType
+  playable?: ComponentType
 }

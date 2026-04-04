@@ -79,6 +79,11 @@ button {
   cursor: pointer;
 }
 
+:focus-visible {
+  outline: 3px solid rgba(31, 122, 106, 0.28);
+  outline-offset: 3px;
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -274,6 +279,16 @@ img {
 .tag {
   background: rgba(191, 138, 63, 0.12);
   color: #8d6121;
+}
+
+.status-chip.framework-ready {
+  background: rgba(66, 50, 35, 0.08);
+  color: var(--text);
+}
+
+.status-chip.playable {
+  background: rgba(31, 122, 106, 0.14);
+  color: var(--accent-strong);
 }
 
 .status-chip.framework {
@@ -513,6 +528,142 @@ img {
     linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(245, 236, 223, 0.92));
 }
 
+.playable-card {
+  min-height: unset;
+}
+
+.play-header,
+.noughts-layout,
+.score-grid,
+.action-row,
+.mode-switch {
+  display: grid;
+  gap: 16px;
+}
+
+.play-header,
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.mode-switch {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 251, 242, 0.88);
+}
+
+.segment-button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--text-soft);
+  background: transparent;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.segment-button.active {
+  background: var(--accent);
+  color: #f7f1e8;
+}
+
+.segment-button:hover {
+  transform: translateY(-1px);
+}
+
+.noughts-layout {
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  align-items: start;
+}
+
+.noughts-main,
+.noughts-side {
+  display: grid;
+  gap: 18px;
+}
+
+.score-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.score-card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 252, 246, 0.82);
+}
+
+.score-card strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--heading);
+}
+
+.score-label,
+.status-panel span {
+  color: var(--text-soft);
+}
+
+.status-panel {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(31, 122, 106, 0.18);
+  background: rgba(31, 122, 106, 0.08);
+}
+
+.status-panel strong {
+  color: var(--accent-strong);
+}
+
+.play-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.board-cell {
+  min-height: 120px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255, 252, 247, 0.92);
+  color: var(--heading);
+  font-family: var(--serif);
+  font-size: clamp(2.6rem, 7vw, 4rem);
+  font-weight: 700;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.board-cell:not(:disabled):hover {
+  transform: translateY(-2px);
+  border-color: rgba(31, 122, 106, 0.32);
+}
+
+.board-cell:disabled {
+  cursor: default;
+}
+
+.board-cell.winning {
+  border-color: rgba(31, 122, 106, 0.5);
+  background: rgba(31, 122, 106, 0.14);
+  color: var(--accent-strong);
+}
+
 .board-sample,
 .mines-grid,
 .tic-grid,
@@ -624,7 +775,9 @@ img {
   .stats-grid,
   .placeholder-grid,
   .details-grid,
-  .solitaire-stack {
+  .solitaire-stack,
+  .noughts-layout,
+  .score-grid {
     grid-template-columns: 1fr;
   }
 
@@ -647,6 +800,10 @@ img {
   .game-frame,
   .game-preview-card {
     padding: 22px;
+  }
+
+  .mode-switch {
+    width: 100%;
   }
 }
 
@@ -674,5 +831,15 @@ img {
 
   .board-sample {
     height: 140px;
+  }
+
+  .play-header,
+  .action-row {
+    align-items: stretch;
+  }
+
+  .board-cell {
+    min-height: 92px;
+    border-radius: 18px;
   }
 }

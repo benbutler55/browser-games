@@ -18,7 +18,7 @@ This repository hosts the source code for a browser-based games collection that 
 
 ## Delivery plan
 
-1. Build `Noughts and Crosses` first to validate shared game patterns.
+1. `Noughts and Crosses` is now the first playable game and should be treated as the reference implementation for turn-based game patterns.
 2. Build `Minesweeper` next for board-state and persistence patterns.
 3. Build `Pong` after that for animation and keyboard input.
 4. Build `Solitaire` last in the first wave because it has the richest state and interaction model.
@@ -33,4 +33,4 @@ This repository hosts the source code for a browser-based games collection that 
 
 ## Current status
 
-The repository currently provides the app shell, roadmap, navigation, and per-game overview pages. Playable game logic has not yet been implemented.
+The repository currently provides the app shell, roadmap, navigation, GitHub Pages workflow, and a playable `Noughts and Crosses` implementation. The other game routes currently present planned previews rather than full gameplay.

@@ -1,4 +1,5 @@
 import { MinesweeperPreview } from './minesweeper/MinesweeperPreview'
+import { NoughtsAndCrossesGame } from './noughts-and-crosses/NoughtsAndCrossesGame'
 import { NoughtsAndCrossesPreview } from './noughts-and-crosses/NoughtsAndCrossesPreview'
 import { PongPreview } from './pong/PongPreview'
 import { SolitairePreview } from './solitaire/SolitairePreview'
@@ -45,19 +46,20 @@ export const games: GameDefinition[] = [
     slug: 'noughts-and-crosses',
     name: 'Noughts and Crosses',
     genre: 'Strategy',
-    status: 'Framework Ready',
+    status: 'Playable',
     description:
       'The fastest route to proving the game architecture: compact rules, clear end states, and reusable UI patterns.',
     tags: ['Turn-based', 'Local multiplayer', 'AI-ready'],
     highlights: [
       'First build target for validating shared game-shell patterns.',
-      'Supports local play first, with simple AI as the likely next add-on.',
-      'Perfect candidate for extracting reusable board and status components.',
+      'Includes local two-player play and an unbeatable computer mode.',
+      'Uses reusable board, score, and round-status patterns that later games can borrow.',
     ],
     controls: 'Click or tap a square to place a mark.',
-    initialMode: 'Two-player local play, with AI planned immediately after.',
+    initialMode: 'Two-player local play or a one-player mode against the computer.',
     expansionPath: 'Simple AI, score streaks, board themes, and keyboard navigation.',
     preview: NoughtsAndCrossesPreview,
+    playable: NoughtsAndCrossesGame,
   },
   {
     slug: 'solitaire',
