@@ -35,8 +35,8 @@ export function GameCard({ game }: GameCardProps) {
       </ul>
 
       <div className="game-card-footer">
-        <span className="meta-note">Route: /#/games/{game.slug}</span>
-        <span className="ghost-button">{game.playable ? 'Play now' : 'Open brief'}</span>
+        <span className="meta-note">{game.genre}</span>
+        <span className="ghost-button">{game.playable ? 'Play now' : 'Open game'}</span>
       </div>
     </Link>
   )

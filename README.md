@@ -15,7 +15,7 @@ The repo now contains the shared application foundation plus all four initial pl
 
 - shared app shell and navigation
 - game registry for future expansion
-- home page with implementation roadmap
+- gameplay-first home page that links directly into the games
 - a fully playable `Pong` game with keyboard controls, AI difficulty levels, pause flow, and scoring
 - a fully playable `Noughts and Crosses` game with local multiplayer and computer mode
 - a fully playable `Minesweeper` game with three difficulties, first-click safety, timer tracking, and local best times
@@ -55,32 +55,10 @@ src/
 - `vite.config.ts` uses `base: './'` so built assets stay relative.
 - Shared layout and reusable UI live outside individual game folders to keep future growth manageable.
 
-## Roadmap
+## Next Improvements
 
-### Phase 1 - Foundation
-
-1. Initialize the repo and scaffold the static frontend.
-2. Build the shared shell, routes, and registry pattern.
-3. Establish the visual system and responsive layout.
-4. Keep deployment GitHub Pages-ready from the start.
-
-### Phase 2 - First playable games
-
-1. Reuse the Noughts and Crosses and Minesweeper state, status, and persistence patterns where useful.
-2. Continue tightening shared restart, status, and settings patterns across games.
-3. Prepare shared utility layers that make `Pong` and `Solitaire` easier to land cleanly.
-
-### Phase 3 - Realtime systems
-
-1. Reuse Pong's animation, scoring, and pause patterns for later realtime interactions.
-2. Continue refining responsive playfield behaviour and input polish.
-3. Prepare any shared timing or motion helpers that help the remaining games.
-
-### Phase 4 - Rich interaction
-
-1. Reuse Solitaire's move validation and pile-state patterns for future card-based games.
-2. Continue refining the click-to-move interaction model and accessibility.
-3. Consider follow-up features like undo, hints, drag support, and draw-three mode.
+- Detailed next-round planning now lives in `docs/game-roadmap.md`.
+- The live site is kept gameplay-focused rather than showing architecture or roadmap panels.
 
 ## Development
 

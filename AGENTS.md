@@ -29,6 +29,7 @@ This repository hosts the source code for a browser-based games collection that 
 - Preserve GitHub Pages compatibility; prefer solutions that work on static hosting.
 - Add new games through the registry pattern instead of hardcoding links in multiple places.
 - Keep shared UI and shared logic outside individual game folders when it improves reuse.
+- Keep the live site focused on gameplay; record architecture notes and roadmap planning in repo docs instead of on the web pages.
 - Run `npm run lint` and `npm run build` after meaningful code changes.
 - Keep both GitHub workflows current and prefer Node 24-compatible actions/runtime settings.
 - Ensure completed changes are committed and pushed to the remote repository without waiting for the user to ask.
