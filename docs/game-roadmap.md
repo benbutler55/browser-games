@@ -9,6 +9,7 @@ This document tracks the next round of improvements for the current game lineup.
 3. Add match settings for target score and ball speed.
 4. Add lightweight sound effects with a mute toggle.
 5. Improve rally feedback with serve countdowns and point transitions.
+6. Add optional spin and speed modifiers that make advanced returns more expressive.
 
 ## Minesweeper
 
@@ -17,6 +18,7 @@ This document tracks the next round of improvements for the current game lineup.
 3. Track richer local stats such as wins, losses, and streaks.
 4. Improve touch interactions, including a clearer reveal/flag flow.
 5. Add more logic-level test coverage around generation, reveal, and win conditions.
+6. Add visual error feedback for over-flagging or impossible board reads.
 
 ## Noughts and Crosses
 
@@ -25,6 +27,7 @@ This document tracks the next round of improvements for the current game lineup.
 3. Add match-series options such as best-of rounds.
 4. Add move highlights and win-line animation polish.
 5. Consider small presentation or theme variations without changing the core rules.
+6. Add a quick rematch flow that can preserve the current mode and score settings.
 
 ## Solitaire
 
@@ -34,6 +37,7 @@ This document tracks the next round of improvements for the current game lineup.
 4. Improve target affordances for valid tableau and foundation moves.
 5. Consider drag-and-drop only after the click-to-move model remains solid.
 6. Add persistence for in-progress games if it improves the experience.
+7. Add safe auto-foundation rules, animation polish, and better move-history feedback.
 
 ## Shared Improvements
 
@@ -42,3 +46,10 @@ This document tracks the next round of improvements for the current game lineup.
 3. Improve mobile spacing and viewport usage across all game pages.
 4. Expand logic-level tests across the game folders.
 5. Consider a shared local preferences layer for settings such as sound and defaults.
+
+## Suggested Next Round
+
+1. `Minesweeper`: custom boards, chord behavior, and richer stat tracking.
+2. `Pong`: touch controls, local two-player mode, and stronger match settings.
+3. `Solitaire`: undo, hints, and draw-three support.
+4. `Noughts and Crosses`: AI difficulty tiers and keyboard navigation.

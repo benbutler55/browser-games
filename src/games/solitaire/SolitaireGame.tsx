@@ -334,11 +334,11 @@ export function SolitaireGame() {
           </article>
 
           <article className="game-detail">
-            <strong>Interaction model</strong>
+            <strong>Play tips</strong>
             <ul className="rule-list">
-              <li>Select a waste card, tableau run, or foundation top card, then choose a target pile.</li>
-              <li>Exposed face-down tableau cards flip automatically after a valid move.</li>
-              <li>This version favors reliable click-to-move behaviour before any drag support.</li>
+              <li>Turn over hidden tableau cards early; fresh information is usually worth more than a neat stack.</li>
+              <li>Use auto-foundation once a suit is clearly safe to climb and you need to clear space quickly.</li>
+              <li>Leave room for Kings, because empty tableau columns are your main source of mobility.</li>
             </ul>
           </article>
         </aside>

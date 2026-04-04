@@ -281,11 +281,11 @@ export function MinesweeperGame() {
           </article>
 
           <article className="game-detail">
-            <strong>Persistence and expansion</strong>
+            <strong>Board-reading tips</strong>
             <ul className="rule-list">
-              <li>Preferred difficulty, input tool, and best times are stored locally.</li>
-              <li>The next likely additions are custom boards, stat history, and hints.</li>
-              <li>The pure logic helpers here are designed to support tests later.</li>
+              <li>Flags are only markers for you, so keep the count honest as you reason through the board.</li>
+              <li>Open corners created by zero-value cells first; they reveal the most information quickly.</li>
+              <li>If a number is already satisfied by its surrounding flags, the remaining hidden neighbors are safe.</li>
             </ul>
           </article>
         </aside>

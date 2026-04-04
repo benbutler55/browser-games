@@ -390,11 +390,11 @@ export function PongGame() {
           </article>
 
           <article className="game-detail">
-            <strong>Why this matters</strong>
+            <strong>Winning tips</strong>
             <ul className="rule-list">
-              <li>It proves the app can handle realtime loops without a backend.</li>
-              <li>It establishes keyboard, pause, restart, and serve-state patterns.</li>
-              <li>Its motion helpers are a good base for later animation-heavy games.</li>
+              <li>Meet the ball with the upper or lower edge of your paddle to change its angle.</li>
+              <li>Shorter rallies are easier on expert, so reset your position after every return.</li>
+              <li>Use the pause flow between long rallies if you need to break the AI rhythm.</li>
             </ul>
           </article>
         </aside>

@@ -253,11 +253,11 @@ export function NoughtsAndCrossesGame() {
           </article>
 
           <article className="game-detail">
-            <strong>Why this game first</strong>
+            <strong>Round tips</strong>
             <ul className="rule-list">
-              <li>It validates the reusable game frame without hiding behind a complex ruleset.</li>
-              <li>It introduces persistent settings, score tracking, and round-state feedback.</li>
-              <li>Its board and status patterns can be reused for future turn-based games.</li>
+              <li>Taking the center early gives the most ways to create two threats at once.</li>
+              <li>Against the computer, blocking forks matters more than chasing a quick side line.</li>
+              <li>Use the alternating starter to keep matches fair across multiple rounds.</li>
             </ul>
           </article>
         </aside>
