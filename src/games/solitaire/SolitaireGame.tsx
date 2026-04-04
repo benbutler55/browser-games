@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocalStorage } from '../../lib/useLocalStorage'
 import {
+  autoMoveAvailableCardsToFoundations,
   canSelectFoundation,
   createInitialGame,
   drawFromStock,
@@ -48,14 +49,14 @@ export function SolitaireGame() {
         ? 'No stock cards remain. Work the tableau and foundations to finish the deal.'
         : 'Click the stock to draw. Select a waste, foundation, or tableau card run, then choose a target pile.'
 
-  function commitState(nextState: GameState) {
+  function commitState(nextState: GameState, moveCount = 1) {
     if (!won && isWon(nextState)) {
       setWins((currentWins) => currentWins + 1)
     }
 
     setGameState(nextState)
     setSelection(null)
-    setMoves((currentMoves) => currentMoves + 1)
+    setMoves((currentMoves) => currentMoves + moveCount)
     setHasStarted(true)
   }
 
@@ -75,6 +76,16 @@ export function SolitaireGame() {
     }
 
     commitState(result.state)
+  }
+
+  function handleAutoFoundation() {
+    const result = autoMoveAvailableCardsToFoundations(gameState)
+
+    if (result.movedCount === 0) {
+      return
+    }
+
+    commitState(result.state, result.movedCount)
   }
 
   function handleWasteClick() {
@@ -185,6 +196,9 @@ export function SolitaireGame() {
         <div className="action-row solitaire-actions">
           <button className="primary-button" onClick={handleStockClick} type="button">
             {gameState.stock.length > 0 ? 'Draw card' : 'Recycle waste'}
+          </button>
+          <button className="ghost-button" onClick={handleAutoFoundation} type="button">
+            Auto to foundations
           </button>
           <button className="ghost-button" onClick={resetGame} type="button">
             New deal

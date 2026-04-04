@@ -99,7 +99,7 @@ export function moveToFoundation(
   if (selection.type === 'waste') {
     const card = state.waste[state.waste.length - 1]
 
-    if (!card || !canPlaceOnFoundation(card, foundation)) {
+    if (!card || !canPlaceOnFoundation(card, foundation, foundationIndex)) {
       return null
     }
 
@@ -118,7 +118,7 @@ export function moveToFoundation(
   const card = sourcePile[selection.cardIndex]
   const isTopCard = selection.cardIndex === sourcePile.length - 1
 
-  if (!card || !isTopCard || !canPlaceOnFoundation(card, foundation)) {
+  if (!card || !isTopCard || !canPlaceOnFoundation(card, foundation, foundationIndex)) {
     return null
   }
 
@@ -233,6 +233,58 @@ export function isWon(state: GameState) {
   return state.foundations.every((foundation) => foundation.length === 13)
 }
 
+export function autoMoveAvailableCardsToFoundations(state: GameState) {
+  let nextState = state
+  let movedCount = 0
+  let movedThisPass = true
+
+  while (movedThisPass) {
+    movedThisPass = false
+
+    const wasteCard = nextState.waste[nextState.waste.length - 1]
+
+    if (wasteCard) {
+      const foundationIndex = getFoundationIndexForSuit(wasteCard.suit)
+      const nextWasteState = moveToFoundation(nextState, { type: 'waste' }, foundationIndex)
+
+      if (nextWasteState) {
+        nextState = nextWasteState
+        movedCount += 1
+        movedThisPass = true
+        continue
+      }
+    }
+
+    for (let pileIndex = 0; pileIndex < nextState.tableau.length; pileIndex += 1) {
+      const pile = nextState.tableau[pileIndex]
+      const topCard = pile[pile.length - 1]
+
+      if (!topCard?.faceUp) {
+        continue
+      }
+
+      const foundationIndex = getFoundationIndexForSuit(topCard.suit)
+      const nextTableauState = moveToFoundation(
+        nextState,
+        { type: 'tableau', pileIndex, cardIndex: pile.length - 1 },
+        foundationIndex,
+      )
+
+      if (nextTableauState) {
+        nextState = nextTableauState
+        movedCount += 1
+        movedThisPass = true
+        break
+      }
+    }
+  }
+
+  return {
+    state: nextState,
+    movedCount,
+  }
+}
+
 export function formatCardLabel(card: Card) {
   return `${formatRank(card.rank)}${formatSuitGlyph(card.suit)}`
 }
@@ -302,13 +354,17 @@ function shuffle<T>(items: T[]) {
   return copy
 }
 
-function canPlaceOnFoundation(card: Card, foundation: Card[]) {
+function canPlaceOnFoundation(card: Card, foundation: Card[], foundationIndex: number) {
   if (foundation.length === 0) {
-    return card.rank === 1
+    return card.rank === 1 && card.suit === getFoundationSuit(foundationIndex)
   }
 
   const topCard = foundation[foundation.length - 1]
   return topCard.suit === card.suit && topCard.rank === card.rank - 1
+}
+
+function getFoundationIndexForSuit(suit: Suit) {
+  return suits.indexOf(suit)
 }
 
 function canPlaceOnTableau(card: Card, tableauPile: Card[]) {
