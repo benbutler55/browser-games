@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type DragEvent } from 'react'
 import { useLocalStorage } from '../../lib/useLocalStorage'
 import {
   autoMoveAvailableCardsToFoundations,
@@ -22,6 +22,8 @@ export function SolitaireGame() {
   const [wins, setWins] = useLocalStorage<number>('solitaire-wins', 0)
   const [gameState, setGameState] = useState<GameState>(() => createInitialGame())
   const [selection, setSelection] = useState<Selection | null>(null)
+  const [dragSelection, setDragSelection] = useState<Selection | null>(null)
+  const [dropTarget, setDropTarget] = useState<string | null>(null)
   const [moves, setMoves] = useState(0)
   const [seconds, setSeconds] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
@@ -42,12 +44,14 @@ export function SolitaireGame() {
   }, [hasStarted, won])
 
   const statusMessage = won
-    ? 'You solved the deck. Start a new deal to play again.'
+      ? 'You solved the deck. Start a new deal to play again.'
+    : dragSelection
+      ? 'Drag the selected card or run onto a valid tableau column or foundation.'
     : selection
       ? `Selected ${selectedCards.length > 1 ? `${selectedCards.length} cards` : formatCardLabel(selectedCards[0])}. Choose a valid tableau or foundation target.`
       : gameState.stock.length === 0 && gameState.waste.length === 0
         ? 'No stock cards remain. Work the tableau and foundations to finish the deal.'
-        : 'Click the stock to draw. Select a waste, foundation, or tableau card run, then choose a target pile.'
+        : 'Click the stock to draw. Select or drag a waste card, foundation card, or tableau run onto a valid target.'
 
   function commitState(nextState: GameState, moveCount = 1) {
     if (!won && isWon(nextState)) {
@@ -56,6 +60,8 @@ export function SolitaireGame() {
 
     setGameState(nextState)
     setSelection(null)
+    setDragSelection(null)
+    setDropTarget(null)
     setMoves((currentMoves) => currentMoves + moveCount)
     setHasStarted(true)
   }
@@ -63,6 +69,8 @@ export function SolitaireGame() {
   function resetGame() {
     setGameState(createInitialGame())
     setSelection(null)
+    setDragSelection(null)
+    setDropTarget(null)
     setMoves(0)
     setSeconds(0)
     setHasStarted(false)
@@ -99,6 +107,54 @@ export function SolitaireGame() {
     }
 
     setSelection({ type: 'waste' })
+  }
+
+  function handleDragStart(event: DragEvent<HTMLElement>, nextSelection: Selection) {
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.setData('text/plain', 'solitaire-card')
+    setDragSelection(nextSelection)
+    setSelection(null)
+  }
+
+  function handleDragEnd() {
+    setDragSelection(null)
+    setDropTarget(null)
+  }
+
+  function handleFoundationDrop(foundationIndex: number) {
+    const activeSelection = dragSelection ?? selection
+
+    if (!activeSelection) {
+      return
+    }
+
+    const nextState = moveToFoundation(gameState, activeSelection, foundationIndex)
+
+    if (nextState) {
+      commitState(nextState)
+      return
+    }
+
+    setDragSelection(null)
+    setDropTarget(null)
+  }
+
+  function handleTableauDrop(targetPileIndex: number) {
+    const activeSelection = dragSelection ?? selection
+
+    if (!activeSelection) {
+      return
+    }
+
+    const nextState = moveToTableau(gameState, activeSelection, targetPileIndex)
+
+    if (nextState) {
+      commitState(nextState)
+      return
+    }
+
+    setDragSelection(null)
+    setDropTarget(null)
   }
 
   function handleFoundationClick(pileIndex: number) {
@@ -190,7 +246,7 @@ export function SolitaireGame() {
           <p>
             Solitaire now includes stock, waste, foundations, tableau rules,
             automatic card reveals, recycling the stock, and a clean mobile-safe
-            click interaction model.
+            click-and-drag interaction model.
           </p>
         </div>
         <div className="action-row solitaire-actions">
@@ -255,7 +311,17 @@ export function SolitaireGame() {
                     type="button"
                   >
                     {gameState.waste.length > 0 ? (
-                      <CardView card={gameState.waste[gameState.waste.length - 1]} selected={selection?.type === 'waste'} />
+                      <span
+                        draggable
+                        onDragEnd={handleDragEnd}
+                        onDragStart={(event) => handleDragStart(event, { type: 'waste' })}
+                      >
+                        <CardView
+                          card={gameState.waste[gameState.waste.length - 1]}
+                          selected={selection?.type === 'waste'}
+                          dragged={dragSelection?.type === 'waste'}
+                        />
+                      </span>
                     ) : (
                       <span className="slot-label">Waste</span>
                     )}
@@ -271,12 +337,43 @@ export function SolitaireGame() {
                     return (
                       <button
                         key={pileIndex}
-                        className={isSelected ? 'solitaire-slot foundation-slot selected-slot' : 'solitaire-slot foundation-slot'}
+                        className={
+                          dropTarget === `foundation-${pileIndex}`
+                            ? 'solitaire-slot foundation-slot selected-slot'
+                            : isSelected
+                              ? 'solitaire-slot foundation-slot selected-slot'
+                              : 'solitaire-slot foundation-slot'
+                        }
+                        onDragEnter={() => setDropTarget(`foundation-${pileIndex}`)}
+                        onDragLeave={() => setDropTarget((currentTarget) => currentTarget === `foundation-${pileIndex}` ? null : currentTarget)}
+                        onDragOver={(event) => {
+                          event.preventDefault()
+                          setDropTarget(`foundation-${pileIndex}`)
+                        }}
+                        onDrop={(event) => {
+                          event.preventDefault()
+                          handleFoundationDrop(pileIndex)
+                        }}
                         onClick={() => handleFoundationClick(pileIndex)}
                         type="button"
                       >
                         {topCard ? (
-                          <CardView card={topCard} selected={isSelected} />
+                          <span
+                            draggable
+                            onDragEnd={handleDragEnd}
+                            onDragStart={(event) =>
+                              handleDragStart(event, { type: 'foundation', pileIndex })
+                            }
+                          >
+                            <CardView
+                              card={topCard}
+                              selected={isSelected}
+                              dragged={
+                                dragSelection?.type === 'foundation' &&
+                                dragSelection.pileIndex === pileIndex
+                              }
+                            />
+                          </span>
                         ) : (
                           <span className="slot-label foundation-label">
                             {formatSuitGlyph(getFoundationSuit(pileIndex))}
@@ -290,10 +387,23 @@ export function SolitaireGame() {
 
               <div className="solitaire-tableau">
                 {gameState.tableau.map((pile, pileIndex) => (
-                  <div className="tableau-pile" key={pileIndex}>
+                  <div
+                    className={dropTarget === `tableau-${pileIndex}` ? 'tableau-pile drop-target' : 'tableau-pile'}
+                    key={pileIndex}
+                    onDragEnter={() => setDropTarget(`tableau-${pileIndex}`)}
+                    onDragLeave={() => setDropTarget((currentTarget) => currentTarget === `tableau-${pileIndex}` ? null : currentTarget)}
+                    onDragOver={(event) => {
+                      event.preventDefault()
+                      setDropTarget(`tableau-${pileIndex}`)
+                    }}
+                    onDrop={(event) => {
+                      event.preventDefault()
+                      handleTableauDrop(pileIndex)
+                    }}
+                  >
                     {pile.length === 0 ? (
                       <button
-                        className="solitaire-slot tableau-slot empty-tableau"
+                        className={dropTarget === `tableau-${pileIndex}` ? 'solitaire-slot tableau-slot empty-tableau selected-slot' : 'solitaire-slot tableau-slot empty-tableau'}
                         onClick={() => handleEmptyTableauClick(pileIndex)}
                         type="button"
                       >
@@ -312,8 +422,25 @@ export function SolitaireGame() {
                         onClick={() => handleTableauCardClick(pileIndex, cardIndex)}
                         style={{ top: `${cardIndex * (card.faceUp ? 1.7 : 0.75)}rem` }}
                         type="button"
+                        draggable={card.faceUp && isValidTableauSelection(gameState, { type: 'tableau', pileIndex, cardIndex })}
+                        onDragEnd={handleDragEnd}
+                        onDragStart={(event) =>
+                          handleDragStart(event, {
+                            type: 'tableau',
+                            pileIndex,
+                            cardIndex,
+                          })
+                        }
                       >
-                        <CardView card={card} selected={isCardSelected(pileIndex, cardIndex)} />
+                        <CardView
+                          card={card}
+                          selected={isCardSelected(pileIndex, cardIndex)}
+                          dragged={
+                            dragSelection?.type === 'tableau' &&
+                            dragSelection.pileIndex === pileIndex &&
+                            cardIndex >= dragSelection.cardIndex
+                          }
+                        />
                       </button>
                     ))}
                   </div>
@@ -330,6 +457,7 @@ export function SolitaireGame() {
               <li>Draw one card at a time from the stock into the waste.</li>
               <li>Move cards to the foundations in ascending order by suit.</li>
               <li>Move tableau runs in descending order with alternating colors.</li>
+              <li>You can move cards by click-to-move or by dragging them onto a valid pile.</li>
             </ul>
           </article>
 
@@ -339,6 +467,7 @@ export function SolitaireGame() {
               <li>Turn over hidden tableau cards early; fresh information is usually worth more than a neat stack.</li>
               <li>Use auto-foundation once a suit is clearly safe to climb and you need to clear space quickly.</li>
               <li>Leave room for Kings, because empty tableau columns are your main source of mobility.</li>
+              <li>Dragging whole tableau runs is often faster when you are reorganizing multiple columns.</li>
             </ul>
           </article>
         </aside>
@@ -350,22 +479,43 @@ export function SolitaireGame() {
 type CardViewProps = {
   card: GameState['stock'][number]
   selected?: boolean
+  dragged?: boolean
 }
 
-function CardView({ card, selected = false }: CardViewProps) {
+function CardView({ card, selected = false, dragged = false }: CardViewProps) {
   if (!card.faceUp) {
-    return <span className={selected ? 'solitaire-playing-card face-down selected-face' : 'solitaire-playing-card face-down'} />
+    return (
+      <span
+        className={
+          dragged
+            ? selected
+              ? 'solitaire-playing-card face-down selected-face dragged-face'
+              : 'solitaire-playing-card face-down dragged-face'
+            : selected
+              ? 'solitaire-playing-card face-down selected-face'
+              : 'solitaire-playing-card face-down'
+        }
+      />
+    )
   }
 
   const rank = formatRank(card.rank)
   const suitGlyph = formatSuitGlyph(card.suit)
   const faceClassName = isRed(card)
     ? selected
-      ? 'solitaire-playing-card red-card selected-face'
-      : 'solitaire-playing-card red-card'
+      ? dragged
+        ? 'solitaire-playing-card red-card selected-face dragged-face'
+        : 'solitaire-playing-card red-card selected-face'
+      : dragged
+        ? 'solitaire-playing-card red-card dragged-face'
+        : 'solitaire-playing-card red-card'
     : selected
-      ? 'solitaire-playing-card selected-face'
-      : 'solitaire-playing-card'
+      ? dragged
+        ? 'solitaire-playing-card selected-face dragged-face'
+        : 'solitaire-playing-card selected-face'
+      : dragged
+        ? 'solitaire-playing-card dragged-face'
+        : 'solitaire-playing-card'
 
   return (
     <span className={faceClassName} aria-label={formatCardLabel(card)}>

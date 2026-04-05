@@ -969,6 +969,12 @@ img {
   background: rgba(31, 122, 106, 0.08);
 }
 
+.drop-target {
+  outline: 2px dashed rgba(31, 122, 106, 0.34);
+  outline-offset: 6px;
+  border-radius: 20px;
+}
+
 .slot-label {
   display: grid;
   place-items: center;
@@ -1139,6 +1145,11 @@ img {
   transform: translateY(-2px);
   border-color: rgba(31, 122, 106, 0.34);
   box-shadow: 0 16px 28px rgba(31, 122, 106, 0.16);
+}
+
+.solitaire-playing-card.dragged-face {
+  opacity: 0.76;
+  box-shadow: 0 18px 30px rgba(31, 122, 106, 0.2);
 }
 
 .tableau-pile {
