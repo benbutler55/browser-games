@@ -237,6 +237,63 @@ export function isWon(state: GameState) {
   return state.foundations.every((foundation) => foundation.length === 13)
 }
 
+export function hasLegalMove(state: GameState) {
+  if (state.stock.length > 0 || state.waste.length > 0) {
+    return true
+  }
+
+  for (let pileIndex = 0; pileIndex < state.tableau.length; pileIndex += 1) {
+    const pile = state.tableau[pileIndex]
+
+    for (let cardIndex = 0; cardIndex < pile.length; cardIndex += 1) {
+      const selection: Selection = {
+        type: 'tableau',
+        pileIndex,
+        cardIndex,
+      }
+
+      if (!isValidTableauSelection(state, selection)) {
+        continue
+      }
+
+      const card = pile[cardIndex]
+
+      if (cardIndex === pile.length - 1) {
+        const foundationIndex = getFoundationIndexForSuit(card.suit)
+
+        if (moveToFoundation(state, selection, foundationIndex)) {
+          return true
+        }
+      }
+
+      for (let targetPileIndex = 0; targetPileIndex < state.tableau.length; targetPileIndex += 1) {
+        if (moveToTableau(state, selection, targetPileIndex)) {
+          return true
+        }
+      }
+    }
+  }
+
+  for (let foundationIndex = 0; foundationIndex < state.foundations.length; foundationIndex += 1) {
+    if (!canSelectFoundation(state, foundationIndex)) {
+      continue
+    }
+
+    const selection: Selection = {
+      type: 'foundation',
+      pileIndex: foundationIndex,
+    }
+
+    for (let targetPileIndex = 0; targetPileIndex < state.tableau.length; targetPileIndex += 1) {
+      if (moveToTableau(state, selection, targetPileIndex)) {
+        return true
+      }
+    }
+  }
+
+  return false
+}
+
 export function autoMoveAvailableCardsToFoundations(state: GameState) {
   let nextState = state
   let movedCount = 0

@@ -8,6 +8,7 @@ import {
   formatCardLabel,
   formatRank,
   formatSuitGlyph,
+  hasLegalMove,
   getFoundationSuit,
   getSelectedCards,
   isRed,
@@ -29,10 +30,11 @@ export function SolitaireGame() {
   const [hasStarted, setHasStarted] = useState(false)
 
   const won = useMemo(() => isWon(gameState), [gameState])
+  const lost = useMemo(() => !won && !hasLegalMove(gameState), [gameState, won])
   const selectedCards = selection ? getSelectedCards(gameState, selection) : []
 
   useEffect(() => {
-    if (!hasStarted || won) {
+    if (!hasStarted || won || lost) {
       return
     }
 
@@ -41,10 +43,12 @@ export function SolitaireGame() {
     }, 1000)
 
     return () => window.clearInterval(timer)
-  }, [hasStarted, won])
+  }, [hasStarted, lost, won])
 
   const statusMessage = won
       ? 'You solved the deck. Start a new deal to play again.'
+    : lost
+      ? 'No legal moves remain in this deal. Start a new game to try again.'
     : dragSelection
       ? 'Drag the selected card or run onto a valid tableau column or foundation.'
     : selection
@@ -77,6 +81,10 @@ export function SolitaireGame() {
   }
 
   function handleStockClick() {
+    if (won || lost) {
+      return
+    }
+
     const result = drawFromStock(gameState)
 
     if (!result.moved) {
@@ -87,6 +95,10 @@ export function SolitaireGame() {
   }
 
   function handleAutoFoundation() {
+    if (won || lost) {
+      return
+    }
+
     const result = autoMoveAvailableCardsToFoundations(gameState)
 
     if (result.movedCount === 0) {
@@ -97,6 +109,10 @@ export function SolitaireGame() {
   }
 
   function handleWasteClick() {
+    if (won || lost) {
+      return
+    }
+
     if (gameState.waste.length === 0) {
       return
     }
@@ -110,6 +126,11 @@ export function SolitaireGame() {
   }
 
   function handleDragStart(event: DragEvent<HTMLElement>, nextSelection: Selection) {
+    if (won || lost) {
+      event.preventDefault()
+      return
+    }
+
     event.dataTransfer.effectAllowed = 'move'
     event.dataTransfer.setData('text/plain', 'solitaire-card')
     setDragSelection(nextSelection)
@@ -122,6 +143,10 @@ export function SolitaireGame() {
   }
 
   function handleFoundationDrop(foundationIndex: number) {
+    if (won || lost) {
+      return
+    }
+
     const activeSelection = dragSelection ?? selection
 
     if (!activeSelection) {
@@ -140,6 +165,10 @@ export function SolitaireGame() {
   }
 
   function handleTableauDrop(targetPileIndex: number) {
+    if (won || lost) {
+      return
+    }
+
     const activeSelection = dragSelection ?? selection
 
     if (!activeSelection) {
@@ -158,6 +187,10 @@ export function SolitaireGame() {
   }
 
   function handleFoundationClick(pileIndex: number) {
+    if (won || lost) {
+      return
+    }
+
     if (selection) {
       const nextState = moveToFoundation(gameState, selection, pileIndex)
 
@@ -180,6 +213,10 @@ export function SolitaireGame() {
   }
 
   function handleTableauCardClick(pileIndex: number, cardIndex: number) {
+    if (won || lost) {
+      return
+    }
+
     const card = gameState.tableau[pileIndex][cardIndex]
 
     if (!card.faceUp) {
@@ -218,6 +255,10 @@ export function SolitaireGame() {
   }
 
   function handleEmptyTableauClick(pileIndex: number) {
+    if (won || lost) {
+      return
+    }
+
     if (!selection) {
       return
     }
@@ -312,7 +353,7 @@ export function SolitaireGame() {
                   >
                     {gameState.waste.length > 0 ? (
                       <span
-                        draggable
+                        draggable={!lost && !won}
                         onDragEnd={handleDragEnd}
                         onDragStart={(event) => handleDragStart(event, { type: 'waste' })}
                       >
@@ -359,7 +400,7 @@ export function SolitaireGame() {
                       >
                         {topCard ? (
                           <span
-                            draggable
+                            draggable={!lost && !won}
                             onDragEnd={handleDragEnd}
                             onDragStart={(event) =>
                               handleDragStart(event, { type: 'foundation', pileIndex })
@@ -422,7 +463,12 @@ export function SolitaireGame() {
                         onClick={() => handleTableauCardClick(pileIndex, cardIndex)}
                         style={{ top: `${cardIndex * (card.faceUp ? 1.7 : 0.75)}rem` }}
                         type="button"
-                        draggable={card.faceUp && isValidTableauSelection(gameState, { type: 'tableau', pileIndex, cardIndex })}
+                        draggable={
+                          !lost &&
+                          !won &&
+                          card.faceUp &&
+                          isValidTableauSelection(gameState, { type: 'tableau', pileIndex, cardIndex })
+                        }
                         onDragEnd={handleDragEnd}
                         onDragStart={(event) =>
                           handleDragStart(event, {
