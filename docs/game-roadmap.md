@@ -31,11 +31,10 @@ This document tracks the next round of improvements for the current game lineup.
 
 1. Add undo.
 2. Add hints.
-3. Add draw-three mode.
-4. Improve target affordances for valid tableau and foundation moves.
-5. Consider drag-and-drop only after the click-to-move model remains solid.
-6. Add persistence for in-progress games if it improves the experience.
-7. Add safe auto-foundation rules, animation polish, and better move-history feedback.
+3. Improve target affordances for valid tableau and foundation moves.
+4. Add persistence for in-progress games if it improves the experience.
+5. Add safe auto-foundation rules, animation polish, and better move-history feedback.
+6. Continue polishing drag-and-drop behavior across desktop and touch devices.
 
 ## Shared Improvements
 

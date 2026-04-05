@@ -242,16 +242,16 @@ export function SolitaireGame() {
       <div className="play-header">
         <div>
           <span className="eyebrow">Playable now</span>
-          <h2>Klondike draw-one is live with click-to-move play.</h2>
+          <h2>Klondike draw-three is live with click and drag play.</h2>
           <p>
             Solitaire now includes stock, waste, foundations, tableau rules,
-            automatic card reveals, recycling the stock, and a clean mobile-safe
-            click-and-drag interaction model.
+            automatic card reveals, three-card stock draws, recycling the stock,
+            and a clean mobile-safe click-and-drag interaction model.
           </p>
         </div>
         <div className="action-row solitaire-actions">
           <button className="primary-button" onClick={handleStockClick} type="button">
-            {gameState.stock.length > 0 ? 'Draw card' : 'Recycle waste'}
+            {gameState.stock.length > 0 ? 'Draw three' : 'Recycle waste'}
           </button>
           <button className="ghost-button" onClick={handleAutoFoundation} type="button">
             Auto to foundations
@@ -454,7 +454,7 @@ export function SolitaireGame() {
           <article className="game-detail">
             <strong>Current ruleset</strong>
             <ul className="rule-list">
-              <li>Draw one card at a time from the stock into the waste.</li>
+              <li>Draw up to three cards at a time from the stock into the waste.</li>
               <li>Move cards to the foundations in ascending order by suit.</li>
               <li>Move tableau runs in descending order with alternating colors.</li>
               <li>You can move cards by click-to-move or by dragging them onto a valid pile.</li>

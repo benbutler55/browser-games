@@ -54,17 +54,21 @@ export function createInitialGame(): GameState {
   }
 }
 
-export function drawFromStock(state: GameState) {
+export function drawFromStock(state: GameState, drawCount = 3) {
   if (state.stock.length > 0) {
-    const stock = state.stock.slice(0, -1)
-    const drawnCard = { ...state.stock[state.stock.length - 1], faceUp: true }
+    const nextDrawCount = Math.min(drawCount, state.stock.length)
+    const stock = state.stock.slice(0, -nextDrawCount)
+    const drawnCards = state.stock
+      .slice(-nextDrawCount)
+      .reverse()
+      .map((card) => ({ ...card, faceUp: true }))
 
     return {
       moved: true,
       state: {
         ...state,
         stock,
-        waste: [...state.waste, drawnCard],
+        waste: [...state.waste, ...drawnCards],
       },
     }
   }

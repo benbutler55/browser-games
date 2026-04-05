@@ -19,7 +19,7 @@ The repo now contains the shared application foundation plus all four initial pl
 - a fully playable `Pong` game with AI or local two-player modes, touch controls, pause flow, and match settings
 - a fully playable `Noughts and Crosses` game with local multiplayer and computer mode
 - a fully playable `Minesweeper` game with preset and custom boards, chord reveal, timer tracking, and local stats
-- a fully playable `Solitaire` game with Klondike draw-one rules and click-to-move interactions
+- a fully playable `Solitaire` game with Klondike draw-three rules plus click and drag interactions
 - responsive styling and static-hosting-safe routing
 - CI and GitHub Pages deployment workflows in `.github/workflows/`
 
@@ -28,7 +28,7 @@ The repo now contains the shared application foundation plus all four initial pl
 - Pong
 - Minesweeper
 - Noughts and Crosses
-- Solitaire (`Klondike draw-one`)
+- Solitaire (`Klondike draw-three`)
 
 ## Project structure
 
