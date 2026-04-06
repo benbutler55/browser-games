@@ -44,6 +44,46 @@ This document tracks the next round of improvements for the current game lineup.
 4. Expand logic-level tests across the game folders.
 5. Consider a shared local preferences layer for settings such as sound and defaults.
 
+## 2048
+
+1. Add tile slide animations for smoother visual feedback.
+2. Add board size options beyond the standard 4x4 grid.
+3. Add tile themes and colour palette options.
+4. Add undo support for the last move.
+5. Add high-score persistence across sessions.
+
+## Snake
+
+1. Add speed settings for different difficulty levels.
+2. Add obstacle mode with walls placed on the board.
+3. Add wrap-around mode where the snake exits one edge and enters the opposite.
+4. Add a food variety system with bonus items and effects.
+5. Improve touch controls with swipe sensitivity tuning.
+
+## Wordle
+
+1. Add hard mode requiring discovered letters to be reused.
+2. Add share results as a coloured grid for social sharing.
+3. Add extended stats including guess distribution and streak tracking.
+4. Add a larger dictionary for more puzzle variety.
+5. Add a practice mode with unlimited puzzles outside the daily rotation.
+
+## Tetris
+
+1. Add hold piece functionality to stash a piece for later.
+2. Add piece preview queue showing upcoming pieces.
+3. Add T-spin detection and scoring bonuses.
+4. Add touch controls for mobile play.
+5. Add a marathon mode with extended level progression.
+
+## Sudoku
+
+1. Add a hint system that highlights the next logical move.
+2. Add undo support for stepping back through entries.
+3. Add a puzzle rating system that scores difficulty after completion.
+4. Add pencil mark auto-elimination when a value is placed.
+5. Add timed challenge mode with leaderboard tracking.
+
 ## Suggested Next Round
 
 1. `Solitaire`: undo, hints, and draw-three support.

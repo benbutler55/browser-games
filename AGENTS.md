@@ -22,6 +22,11 @@ This repository hosts the source code for a browser-based games collection that 
 2. `Minesweeper` is now the reference implementation for grid-state, timer, difficulty, and local persistence patterns.
 3. `Pong` is now the reference implementation for animation, AI pacing, pause flow, and keyboard input.
 4. `Solitaire` is now the reference implementation for card movement, pile validation, and richer interaction state.
+5. `2048` is the reference implementation for swipe/keyboard grid movement and tile merging.
+6. `Snake` is the reference implementation for real-time game loops with directional input.
+7. `Wordle` is the reference implementation for word-guess mechanics and colour-coded feedback.
+8. `Tetris` is the reference implementation for falling-piece mechanics, rotation systems, and line clearing.
+9. `Sudoku` is the reference implementation for constraint-based puzzle generation and note-taking UI.
 
 ## Working rules for future agents
 
@@ -36,4 +41,4 @@ This repository hosts the source code for a browser-based games collection that 
 
 ## Current status
 
-The repository currently provides the app shell, roadmap, navigation, CI and GitHub Pages workflows, and playable implementations of `Pong`, `Noughts and Crosses`, `Minesweeper`, and `Solitaire`.
+The repository currently provides the app shell, roadmap, navigation, CI and GitHub Pages workflows, and playable implementations of all nine games: `Pong`, `Noughts and Crosses`, `Minesweeper`, `Solitaire`, `2048`, `Snake`, `Wordle`, `Tetris`, and `Sudoku`. Infrastructure additions include a Vitest test suite (163 tests), dark mode with system preference detection, and shared hooks (`useGameTimer`, `useGameStats`, `useKeyboardShortcut`, `useSound`).

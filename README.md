@@ -5,13 +5,13 @@ Browser Games is a static web app for hosting a growing collection of polished, 
 ## Repo summary
 
 - Purpose: host a multi-game browser experience with a shared shell and room for future expansion.
-- Stack: `Vite`, `React`, `TypeScript`, `react-router-dom`.
+- Stack: `Vite`, `React`, `TypeScript`, `react-router-dom`, `Vitest`.
 - Deployment model: fully static, GitHub Pages-friendly.
 - UI direction: clean light interface with simple navigation and dedicated game routes.
 
 ## Current status
 
-The repo now contains the shared application foundation plus all four initial playable games:
+The repo now contains the shared application foundation plus nine playable games:
 
 - shared app shell and navigation
 - game registry for future expansion
@@ -20,15 +20,28 @@ The repo now contains the shared application foundation plus all four initial pl
 - a fully playable `Noughts and Crosses` game with local multiplayer and computer mode
 - a fully playable `Minesweeper` game with preset and custom boards, chord reveal, timer tracking, and local stats
 - a fully playable `Solitaire` game with Klondike draw-three rules plus click and drag interactions
+- a fully playable `2048` game with swipe and keyboard controls, score tracking, and win/loss detection
+- a fully playable `Snake` game with arrow-key and swipe controls, growing tail, and score tracking
+- a fully playable `Wordle` game with daily puzzles, keyboard input, and colour-coded feedback
+- a fully playable `Tetris` game with piece rotation, line clearing, level progression, and ghost piece
+- a fully playable `Sudoku` game with multiple difficulty levels, note-taking, and validation
+- dark mode toggle with system preference detection
+- shared hooks: `useGameTimer`, `useGameStats`, `useKeyboardShortcut`, `useSound`
+- Vitest test suite with 163 tests across all games
 - responsive styling and static-hosting-safe routing
 - CI and GitHub Pages deployment workflows in `.github/workflows/`
 
-## Initial game lineup
+## Game lineup
 
 - Pong
 - Minesweeper
 - Noughts and Crosses
 - Solitaire (`Klondike draw-three`)
+- 2048
+- Snake
+- Wordle
+- Tetris
+- Sudoku
 
 ## Project structure
 
@@ -40,12 +53,22 @@ src/
     router.tsx    # application router
   components/     # reusable UI building blocks
   games/
-    minesweeper/  # game-specific modules
+    2048/                  # game-specific modules
+    minesweeper/
     noughts-and-crosses/
     pong/
+    snake/
     solitaire/
-    registry.ts   # metadata-driven game registration
-    types.ts      # shared game contracts
+    sudoku/
+    tetris/
+    wordle/
+    registry.ts            # metadata-driven game registration
+    types.ts               # shared game contracts
+  lib/
+    useGameTimer.ts        # shared game timer hook
+    useGameStats.ts        # shared stats persistence hook
+    useKeyboardShortcut.ts # shared keyboard shortcut hook
+    useSound.ts            # shared sound effect hook
 ```
 
 ## Architecture notes
@@ -72,6 +95,7 @@ npm run dev
 ```bash
 npm run lint
 npm run build
+npm test
 ```
 
 ## Deployment
