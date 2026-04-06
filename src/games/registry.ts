@@ -8,6 +8,8 @@ import { SolitaireGame } from './solitaire/SolitaireGame'
 import { SolitairePreview } from './solitaire/SolitairePreview'
 import { SnakeGame } from './snake/SnakeGame'
 import { SnakePreview } from './snake/SnakePreview'
+import { SudokuGame } from './sudoku/SudokuGame'
+import { SudokuPreview } from './sudoku/SudokuPreview'
 import { TwentyFortyEightGame } from './twenty-forty-eight/TwentyFortyEightGame'
 import { TwentyFortyEightPreview } from './twenty-forty-eight/TwentyFortyEightPreview'
 import { TetrisGame } from './tetris/TetrisGame'
@@ -168,6 +170,25 @@ export const games: GameDefinition[] = [
     expansionPath: 'Hold piece, T-spin detection, and multiplayer.',
     preview: TetrisPreview,
     playable: TetrisGame,
+  },
+  {
+    slug: 'sudoku',
+    name: 'Sudoku',
+    genre: 'Puzzle',
+    status: 'Playable',
+    description:
+      'Classic number-placement puzzle with backtracking generator, pencil marks, and three difficulty levels.',
+    tags: ['Grid logic', 'Keyboard', 'Persistence'],
+    highlights: [
+      'Backtracking puzzle generator with easy, medium, and hard presets.',
+      'Pencil mark mode for tracking candidate numbers.',
+      'Conflict highlighting shows invalid placements instantly.',
+    ],
+    controls: 'Click to select, number keys to fill, arrow keys to navigate. Backspace to clear.',
+    initialMode: 'Classic 9x9 Sudoku with difficulty selection.',
+    expansionPath: 'Hints, undo support, and puzzle rating.',
+    preview: SudokuPreview,
+    playable: SudokuGame,
   },
 ]
 

@@ -1696,6 +1696,39 @@ img {
 .piece-l { background: #ff9800; }
 .piece-ghost { background: rgba(31, 122, 106, 0.2); border: 1px dashed rgba(31, 122, 106, 0.3); }
 
+.sudoku-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(140px, 0.35fr);
+  gap: 18px;
+  align-items: start;
+}
+.sudoku-main { display: grid; gap: 18px; }
+.sudoku-side { display: grid; gap: 12px; }
+.sudoku-board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 3px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 251, 244, 0.78);
+}
+.sudoku-cell {
+  display: grid; place-items: center; aspect-ratio: 1;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-weight: 700; font-size: clamp(1rem, 2.5vw, 1.4rem);
+  background: rgba(255, 252, 247, 0.92); color: var(--accent-strong);
+  cursor: pointer; padding: 0;
+}
+.sudoku-given { color: var(--heading); font-weight: 800; }
+.sudoku-selected { border-color: var(--accent); background: rgba(31, 122, 106, 0.1); box-shadow: 0 0 0 2px rgba(31, 122, 106, 0.2); }
+.sudoku-conflict { color: var(--danger); background: rgba(181, 84, 72, 0.08); }
+.sudoku-border-right { border-right: 2px solid var(--border-strong); }
+.sudoku-border-bottom { border-bottom: 2px solid var(--border-strong); }
+.sudoku-pencil { font-size: 0.55rem; line-height: 1.2; color: var(--text-soft); word-break: break-all; }
+.sudoku-numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.active-pencil { background: var(--accent-soft); border-color: rgba(31, 122, 106, 0.24); color: var(--accent-strong); }
+
 @media (max-width: 960px) {
   .shell {
     width: min(var(--max-width), calc(100% - 16px));
@@ -1738,6 +1771,7 @@ img {
   .minesweeper-side,
   .solitaire-side,
   .tetris-layout,
+  .sudoku-layout,
   .twenty48-score-row {
     grid-template-columns: 1fr;
   }
