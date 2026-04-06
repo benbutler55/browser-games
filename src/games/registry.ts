@@ -10,6 +10,8 @@ import { SnakeGame } from './snake/SnakeGame'
 import { SnakePreview } from './snake/SnakePreview'
 import { TwentyFortyEightGame } from './twenty-forty-eight/TwentyFortyEightGame'
 import { TwentyFortyEightPreview } from './twenty-forty-eight/TwentyFortyEightPreview'
+import { WordleGame } from './wordle/WordleGame'
+import { WordlePreview } from './wordle/WordlePreview'
 import type { GameDefinition } from './types'
 
 export const games: GameDefinition[] = [
@@ -126,6 +128,25 @@ export const games: GameDefinition[] = [
     expansionPath: 'Speed levels, obstacles, and wrap-around mode.',
     preview: SnakePreview,
     playable: SnakeGame,
+  },
+  {
+    slug: 'wordle',
+    name: 'Wordle',
+    genre: 'Word',
+    status: 'Playable',
+    description:
+      'Guess the daily five-letter word in six tries with color-coded feedback for each letter.',
+    tags: ['Daily puzzle', 'Keyboard', 'Word game'],
+    highlights: [
+      'Daily word seeded by date for consistent play.',
+      'On-screen virtual keyboard with letter state tracking.',
+      'Game state and win/loss stats persisted in localStorage.',
+    ],
+    controls: 'Type letters, Enter to submit, Backspace to delete. On-screen keyboard also available.',
+    initialMode: 'Daily word puzzle with six attempts.',
+    expansionPath: 'Hard mode, streak tracking, share results, and extended word list.',
+    preview: WordlePreview,
+    playable: WordleGame,
   },
 ]
 
