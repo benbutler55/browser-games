@@ -1,7 +1,10 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { games } from '../../games/registry'
+import { useTheme } from '../../lib/useTheme'
 
 export function AppShell() {
+  const { theme, setTheme } = useTheme()
+
   return (
     <div className="shell">
       <header className="topbar">
@@ -36,6 +39,22 @@ export function AppShell() {
             </NavLink>
           ))}
         </nav>
+        <button
+          className="ghost-button"
+          onClick={() =>
+            setTheme(
+              theme === 'dark'
+                ? 'light'
+                : theme === 'light'
+                  ? 'system'
+                  : 'dark',
+            )
+          }
+          aria-label="Toggle theme"
+          title={`Theme: ${theme}`}
+        >
+          {theme === 'dark' ? 'Dark' : theme === 'light' ? 'Light' : 'Auto'}
+        </button>
       </header>
       <main className="content">
         <Outlet />

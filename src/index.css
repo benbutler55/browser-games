@@ -1367,6 +1367,138 @@ img {
   min-height: 52vh;
 }
 
+/* ── Dark mode: system preference auto-detection ── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1612;
+    --bg-strong: #221e18;
+    --surface: rgba(34, 30, 24, 0.88);
+    --surface-strong: #2a2520;
+    --surface-muted: rgba(34, 30, 24, 0.72);
+    --border: rgba(200, 180, 150, 0.18);
+    --border-strong: rgba(200, 180, 150, 0.28);
+    --text: #e0d6c8;
+    --text-soft: #a99880;
+    --heading: #f0e8da;
+    --accent: #3db9a4;
+    --accent-strong: #5cd4bf;
+    --accent-soft: rgba(61, 185, 164, 0.12);
+    --gold: #d4a04a;
+    --danger: #d46b5e;
+    --shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  :root:not([data-theme="light"]) body {
+    background: linear-gradient(180deg, #1a1612 0%, #1a1612 45%, #12100c 100%);
+  }
+
+  :root:not([data-theme="light"]) body::before {
+    opacity: 0.03;
+  }
+
+  :root:not([data-theme="light"]) .shell {
+    border-color: rgba(200, 180, 150, 0.1);
+    background: rgba(26, 22, 18, 0.56);
+  }
+
+  :root:not([data-theme="light"]) .topbar {
+    background: rgba(26, 22, 18, 0.84);
+  }
+
+  :root:not([data-theme="light"]) .panel,
+  :root:not([data-theme="light"]) .game-card,
+  :root:not([data-theme="light"]) .stat-card,
+  :root:not([data-theme="light"]) .game-frame,
+  :root:not([data-theme="light"]) .game-preview-card {
+    background: linear-gradient(180deg, rgba(34, 30, 24, 0.96), rgba(26, 22, 18, 0.85));
+  }
+
+  :root:not([data-theme="light"]) .primary-button {
+    color: #1a1612;
+  }
+
+  :root:not([data-theme="light"]) .solitaire-playing-card {
+    background: linear-gradient(180deg, #2a2520, #1a1612);
+  }
+
+  :root:not([data-theme="light"]) .mine-cell {
+    background: rgba(34, 30, 24, 0.92);
+  }
+
+  :root:not([data-theme="light"]) .mine-cell.hidden {
+    background: linear-gradient(180deg, #2a2520, #221e18);
+  }
+
+  :root:not([data-theme="light"]) .board-cell {
+    background: rgba(34, 30, 24, 0.92);
+  }
+}
+
+/* ── Dark mode: manual override ── */
+:root[data-theme="dark"] {
+  --bg: #1a1612;
+  --bg-strong: #221e18;
+  --surface: rgba(34, 30, 24, 0.88);
+  --surface-strong: #2a2520;
+  --surface-muted: rgba(34, 30, 24, 0.72);
+  --border: rgba(200, 180, 150, 0.18);
+  --border-strong: rgba(200, 180, 150, 0.28);
+  --text: #e0d6c8;
+  --text-soft: #a99880;
+  --heading: #f0e8da;
+  --accent: #3db9a4;
+  --accent-strong: #5cd4bf;
+  --accent-soft: rgba(61, 185, 164, 0.12);
+  --gold: #d4a04a;
+  --danger: #d46b5e;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="dark"] body {
+  background: linear-gradient(180deg, #1a1612 0%, #1a1612 45%, #12100c 100%);
+}
+
+:root[data-theme="dark"] body::before {
+  opacity: 0.03;
+}
+
+:root[data-theme="dark"] .shell {
+  border-color: rgba(200, 180, 150, 0.1);
+  background: rgba(26, 22, 18, 0.56);
+}
+
+:root[data-theme="dark"] .topbar {
+  background: rgba(26, 22, 18, 0.84);
+}
+
+:root[data-theme="dark"] .panel,
+:root[data-theme="dark"] .game-card,
+:root[data-theme="dark"] .stat-card,
+:root[data-theme="dark"] .game-frame,
+:root[data-theme="dark"] .game-preview-card {
+  background: linear-gradient(180deg, rgba(34, 30, 24, 0.96), rgba(26, 22, 18, 0.85));
+}
+
+:root[data-theme="dark"] .primary-button {
+  color: #1a1612;
+}
+
+:root[data-theme="dark"] .solitaire-playing-card {
+  background: linear-gradient(180deg, #2a2520, #1a1612);
+}
+
+:root[data-theme="dark"] .mine-cell {
+  background: rgba(34, 30, 24, 0.92);
+}
+
+:root[data-theme="dark"] .mine-cell.hidden {
+  background: linear-gradient(180deg, #2a2520, #221e18);
+}
+
+:root[data-theme="dark"] .board-cell {
+  background: rgba(34, 30, 24, 0.92);
+}
+
 @media (max-width: 960px) {
   .shell {
     width: min(var(--max-width), calc(100% - 16px));
