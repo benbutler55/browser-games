@@ -1502,8 +1502,33 @@ img {
       linear-gradient(180deg, rgba(34, 30, 24, 0.96), rgba(26, 22, 18, 0.85));
   }
 
+  :root:not([data-theme="light"]) .game-detail {
+    background: rgba(34, 30, 24, 0.7);
+    border-color: rgba(200, 180, 150, 0.12);
+  }
+
+  :root:not([data-theme="light"]) .solitaire-board-wrap {
+    background: linear-gradient(180deg, rgba(29, 89, 77, 0.12), rgba(26, 22, 18, 0.9));
+  }
+
   :root:not([data-theme="light"]) .solitaire-playing-card {
     background: linear-gradient(180deg, #2a2520, #1a1612);
+  }
+
+  :root:not([data-theme="light"]) .solitaire-slot {
+    border-color: rgba(200, 180, 150, 0.14);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  :root:not([data-theme="light"]) .solitaire-card-back,
+  :root:not([data-theme="light"]) .solitaire-playing-card.face-down {
+    background:
+      linear-gradient(135deg, rgba(20, 88, 76, 0.95), rgba(31, 122, 106, 0.9)),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+  }
+
+  :root:not([data-theme="light"]) .minesweeper-board-wrap {
+    background: rgba(26, 22, 18, 0.78);
   }
 
   :root:not([data-theme="light"]) .mine-cell {
@@ -1514,8 +1539,64 @@ img {
     background: linear-gradient(180deg, #2a2520, #221e18);
   }
 
+  :root:not([data-theme="light"]) .pong-arena-wrap {
+    background: rgba(26, 22, 18, 0.78);
+  }
+
+  :root:not([data-theme="light"]) .pong-setting-note {
+    background: rgba(34, 30, 24, 0.78);
+  }
+
   :root:not([data-theme="light"]) .board-cell {
     background: rgba(34, 30, 24, 0.92);
+  }
+
+  :root:not([data-theme="light"]) .mode-switch {
+    background: rgba(26, 22, 18, 0.88);
+  }
+
+  :root:not([data-theme="light"]) .sudoku-board {
+    background: rgba(26, 22, 18, 0.78);
+  }
+
+  :root:not([data-theme="light"]) .sudoku-cell {
+    background: rgba(42, 37, 32, 0.92);
+  }
+
+  :root:not([data-theme="light"]) .sudoku-selected {
+    background: rgba(61, 185, 164, 0.12);
+  }
+
+  :root:not([data-theme="light"]) .twenty48-board {
+    background: rgba(26, 22, 18, 0.78);
+  }
+
+  :root:not([data-theme="light"]) .twenty48-cell {
+    background: rgba(42, 37, 32, 0.5);
+  }
+
+  :root:not([data-theme="light"]) .snake-board {
+    background: rgba(26, 22, 18, 0.78);
+  }
+
+  :root:not([data-theme="light"]) .snake-cell {
+    background: rgba(42, 37, 32, 0.4);
+  }
+
+  :root:not([data-theme="light"]) .tetris-board {
+    background: rgba(26, 22, 18, 0.78);
+  }
+
+  :root:not([data-theme="light"]) .tetris-cell {
+    background: rgba(42, 37, 32, 0.35);
+  }
+
+  :root:not([data-theme="light"]) .wordle-cell {
+    border-color: rgba(200, 180, 150, 0.28);
+  }
+
+  :root:not([data-theme="light"]) .wordle-key {
+    background: rgba(42, 37, 32, 0.88);
   }
 }
 
@@ -1616,8 +1697,33 @@ img {
     linear-gradient(180deg, rgba(34, 30, 24, 0.96), rgba(26, 22, 18, 0.85));
 }
 
+:root[data-theme="dark"] .game-detail {
+  background: rgba(34, 30, 24, 0.7);
+  border-color: rgba(200, 180, 150, 0.12);
+}
+
+:root[data-theme="dark"] .solitaire-board-wrap {
+  background: linear-gradient(180deg, rgba(29, 89, 77, 0.12), rgba(26, 22, 18, 0.9));
+}
+
 :root[data-theme="dark"] .solitaire-playing-card {
   background: linear-gradient(180deg, #2a2520, #1a1612);
+}
+
+:root[data-theme="dark"] .solitaire-slot {
+  border-color: rgba(200, 180, 150, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+:root[data-theme="dark"] .solitaire-card-back,
+:root[data-theme="dark"] .solitaire-playing-card.face-down {
+  background:
+    linear-gradient(135deg, rgba(20, 88, 76, 0.95), rgba(31, 122, 106, 0.9)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+}
+
+:root[data-theme="dark"] .minesweeper-board-wrap {
+  background: rgba(26, 22, 18, 0.78);
 }
 
 :root[data-theme="dark"] .mine-cell {
@@ -1628,8 +1734,64 @@ img {
   background: linear-gradient(180deg, #2a2520, #221e18);
 }
 
+:root[data-theme="dark"] .pong-arena-wrap {
+  background: rgba(26, 22, 18, 0.78);
+}
+
+:root[data-theme="dark"] .pong-setting-note {
+  background: rgba(34, 30, 24, 0.78);
+}
+
 :root[data-theme="dark"] .board-cell {
   background: rgba(34, 30, 24, 0.92);
+}
+
+:root[data-theme="dark"] .mode-switch {
+  background: rgba(26, 22, 18, 0.88);
+}
+
+:root[data-theme="dark"] .sudoku-board {
+  background: rgba(26, 22, 18, 0.78);
+}
+
+:root[data-theme="dark"] .sudoku-cell {
+  background: rgba(42, 37, 32, 0.92);
+}
+
+:root[data-theme="dark"] .sudoku-selected {
+  background: rgba(61, 185, 164, 0.12);
+}
+
+:root[data-theme="dark"] .twenty48-board {
+  background: rgba(26, 22, 18, 0.78);
+}
+
+:root[data-theme="dark"] .twenty48-cell {
+  background: rgba(42, 37, 32, 0.5);
+}
+
+:root[data-theme="dark"] .snake-board {
+  background: rgba(26, 22, 18, 0.78);
+}
+
+:root[data-theme="dark"] .snake-cell {
+  background: rgba(42, 37, 32, 0.4);
+}
+
+:root[data-theme="dark"] .tetris-board {
+  background: rgba(26, 22, 18, 0.78);
+}
+
+:root[data-theme="dark"] .tetris-cell {
+  background: rgba(42, 37, 32, 0.35);
+}
+
+:root[data-theme="dark"] .wordle-cell {
+  border-color: rgba(200, 180, 150, 0.28);
+}
+
+:root[data-theme="dark"] .wordle-key {
+  background: rgba(42, 37, 32, 0.88);
 }
 
 /* ── 2048 ── */
