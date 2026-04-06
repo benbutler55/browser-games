@@ -1576,6 +1576,62 @@ img {
   user-select: none;
 }
 
+/* ---------- Snake ---------- */
+
+.snake-layout {
+  display: grid;
+  gap: 18px;
+}
+
+.snake-main {
+  display: grid;
+  gap: 18px;
+}
+
+.snake-board {
+  display: grid;
+  gap: 2px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 251, 244, 0.78);
+  aspect-ratio: 1;
+}
+
+.snake-cell {
+  border-radius: 3px;
+  background: rgba(238, 228, 213, 0.4);
+}
+
+.snake-head {
+  background: var(--accent-strong);
+  border-radius: 5px;
+}
+
+.snake-body {
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+.snake-food {
+  background: var(--danger);
+  border-radius: 50%;
+}
+
+.snake-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  width: 80px;
+  margin: 12px auto;
+}
+
+.snake-preview-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: rgba(238, 228, 213, 0.4);
+}
+
 @media (max-width: 960px) {
   .shell {
     width: min(var(--max-width), calc(100% - 16px));

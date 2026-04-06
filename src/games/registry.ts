@@ -6,6 +6,8 @@ import { PongGame } from './pong/PongGame'
 import { PongPreview } from './pong/PongPreview'
 import { SolitaireGame } from './solitaire/SolitaireGame'
 import { SolitairePreview } from './solitaire/SolitairePreview'
+import { SnakeGame } from './snake/SnakeGame'
+import { SnakePreview } from './snake/SnakePreview'
 import { TwentyFortyEightGame } from './twenty-forty-eight/TwentyFortyEightGame'
 import { TwentyFortyEightPreview } from './twenty-forty-eight/TwentyFortyEightPreview'
 import type { GameDefinition } from './types'
@@ -105,6 +107,25 @@ export const games: GameDefinition[] = [
     expansionPath: 'Animations, tile themes, and board size options.',
     preview: TwentyFortyEightPreview,
     playable: TwentyFortyEightGame,
+  },
+  {
+    slug: 'snake',
+    name: 'Snake',
+    genre: 'Arcade',
+    status: 'Playable',
+    description:
+      'Guide a growing snake to collect food on a 20x20 grid. Arrow keys, WASD, and swipe gestures supported.',
+    tags: ['Realtime', 'Swipe', 'High score'],
+    highlights: [
+      'Arrow keys and WASD for desktop, swipe gestures for mobile.',
+      'Direction input queue prevents missed rapid inputs.',
+      'High score tracking with localStorage persistence.',
+    ],
+    controls: 'Arrow keys, WASD, or swipe. Space to pause.',
+    initialMode: 'Classic snake on a 20x20 grid.',
+    expansionPath: 'Speed levels, obstacles, and wrap-around mode.',
+    preview: SnakePreview,
+    playable: SnakeGame,
   },
 ]
 
