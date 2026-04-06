@@ -1450,8 +1450,56 @@ img {
     background: linear-gradient(180deg, rgba(34, 30, 24, 0.96), rgba(26, 22, 18, 0.85));
   }
 
+  :root:not([data-theme="light"]) .pill-link {
+    background: rgba(200, 180, 150, 0.1);
+    border-color: rgba(200, 180, 150, 0.18);
+  }
+
+  :root:not([data-theme="light"]) .pill-link.active {
+    background: rgba(61, 185, 164, 0.15);
+    border-color: rgba(61, 185, 164, 0.28);
+  }
+
+  :root:not([data-theme="light"]) .ghost-button {
+    background: rgba(200, 180, 150, 0.08);
+    border-color: rgba(200, 180, 150, 0.22);
+  }
+
   :root:not([data-theme="light"]) .primary-button {
     color: #1a1612;
+  }
+
+  :root:not([data-theme="light"]) .score-card {
+    background: rgba(34, 30, 24, 0.82);
+  }
+
+  :root:not([data-theme="light"]) .status-panel {
+    border-color: rgba(61, 185, 164, 0.18);
+    background: rgba(61, 185, 164, 0.08);
+  }
+
+  :root:not([data-theme="light"]) .tag {
+    background: rgba(200, 180, 150, 0.1);
+  }
+
+  :root:not([data-theme="light"]) .eyebrow {
+    background: rgba(212, 160, 74, 0.15);
+  }
+
+  :root:not([data-theme="light"]) .segment-button {
+    color: var(--text-soft);
+  }
+
+  :root:not([data-theme="light"]) .touch-button,
+  :root:not([data-theme="light"]) .custom-field input {
+    background: rgba(34, 30, 24, 0.8);
+    border-color: rgba(200, 180, 150, 0.2);
+  }
+
+  :root:not([data-theme="light"]) .hero-panel {
+    background:
+      radial-gradient(circle at top right, rgba(61, 185, 164, 0.12), transparent 32%),
+      linear-gradient(180deg, rgba(34, 30, 24, 0.96), rgba(26, 22, 18, 0.85));
   }
 
   :root:not([data-theme="light"]) .solitaire-playing-card {
@@ -1516,8 +1564,56 @@ img {
   background: linear-gradient(180deg, rgba(34, 30, 24, 0.96), rgba(26, 22, 18, 0.85));
 }
 
+:root[data-theme="dark"] .pill-link {
+  background: rgba(200, 180, 150, 0.1);
+  border-color: rgba(200, 180, 150, 0.18);
+}
+
+:root[data-theme="dark"] .pill-link.active {
+  background: rgba(61, 185, 164, 0.15);
+  border-color: rgba(61, 185, 164, 0.28);
+}
+
+:root[data-theme="dark"] .ghost-button {
+  background: rgba(200, 180, 150, 0.08);
+  border-color: rgba(200, 180, 150, 0.22);
+}
+
 :root[data-theme="dark"] .primary-button {
   color: #1a1612;
+}
+
+:root[data-theme="dark"] .score-card {
+  background: rgba(34, 30, 24, 0.82);
+}
+
+:root[data-theme="dark"] .status-panel {
+  border-color: rgba(61, 185, 164, 0.18);
+  background: rgba(61, 185, 164, 0.08);
+}
+
+:root[data-theme="dark"] .tag {
+  background: rgba(200, 180, 150, 0.1);
+}
+
+:root[data-theme="dark"] .eyebrow {
+  background: rgba(212, 160, 74, 0.15);
+}
+
+:root[data-theme="dark"] .segment-button {
+  color: var(--text-soft);
+}
+
+:root[data-theme="dark"] .touch-button,
+:root[data-theme="dark"] .custom-field input {
+  background: rgba(34, 30, 24, 0.8);
+  border-color: rgba(200, 180, 150, 0.2);
+}
+
+:root[data-theme="dark"] .hero-panel {
+  background:
+    radial-gradient(circle at top right, rgba(61, 185, 164, 0.12), transparent 32%),
+    linear-gradient(180deg, rgba(34, 30, 24, 0.96), rgba(26, 22, 18, 0.85));
 }
 
 :root[data-theme="dark"] .solitaire-playing-card {
