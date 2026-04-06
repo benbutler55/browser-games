@@ -6,6 +6,8 @@ import { PongGame } from './pong/PongGame'
 import { PongPreview } from './pong/PongPreview'
 import { SolitaireGame } from './solitaire/SolitaireGame'
 import { SolitairePreview } from './solitaire/SolitairePreview'
+import { TwentyFortyEightGame } from './twenty-forty-eight/TwentyFortyEightGame'
+import { TwentyFortyEightPreview } from './twenty-forty-eight/TwentyFortyEightPreview'
 import type { GameDefinition } from './types'
 
 export const games: GameDefinition[] = [
@@ -84,6 +86,25 @@ export const games: GameDefinition[] = [
     expansionPath: 'Undo, hints, scoring, and themed decks.',
     preview: SolitairePreview,
     playable: SolitaireGame,
+  },
+  {
+    slug: 'twenty-forty-eight',
+    name: '2048',
+    genre: 'Puzzle',
+    status: 'Playable',
+    description:
+      'Slide tiles on a 4x4 grid to merge matching numbers. Reach the 2048 tile to win, with undo and swipe support.',
+    tags: ['Swipe', 'Undo', 'High score'],
+    highlights: [
+      'Arrow keys and swipe gestures for mobile.',
+      'Undo support with up to 20 moves of history.',
+      'Best score and best tile tracking.',
+    ],
+    controls: 'Arrow keys or swipe on mobile.',
+    initialMode: 'Classic 4x4 board with score tracking.',
+    expansionPath: 'Animations, tile themes, and board size options.',
+    preview: TwentyFortyEightPreview,
+    playable: TwentyFortyEightGame,
   },
 ]
 

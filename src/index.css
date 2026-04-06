@@ -1499,6 +1499,83 @@ img {
   background: rgba(34, 30, 24, 0.92);
 }
 
+/* ── 2048 ── */
+
+.twenty48-layout {
+  display: grid;
+  gap: 20px;
+}
+
+.twenty48-main {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+
+.twenty48-score-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.twenty48-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface-muted);
+  width: 100%;
+  max-width: 420px;
+}
+
+.twenty48-cell {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  background: var(--surface);
+  color: var(--text);
+  user-select: none;
+}
+
+.tile-2 { background: #ede4d4; color: #776e65; }
+.tile-4 { background: #ece0c6; color: #776e65; }
+.tile-8 { background: #f2b179; color: #f7f1e8; }
+.tile-16 { background: #f59563; color: #f7f1e8; }
+.tile-32 { background: #f67c5f; color: #f7f1e8; }
+.tile-64 { background: #f65e3b; color: #f7f1e8; }
+.tile-128 { background: #edcf72; color: #f7f1e8; font-size: clamp(1rem, 2.5vw, 1.6rem); }
+.tile-256 { background: #edcc61; color: #f7f1e8; font-size: clamp(1rem, 2.5vw, 1.6rem); }
+.tile-512 { background: #edc850; color: #f7f1e8; font-size: clamp(1rem, 2.5vw, 1.6rem); }
+.tile-1024 { background: #edc53f; color: #f7f1e8; font-size: clamp(0.85rem, 2vw, 1.4rem); }
+.tile-2048 { background: #edc22e; color: #f7f1e8; font-size: clamp(0.85rem, 2vw, 1.4rem); }
+.tile-4096 { background: #3c3a32; color: #f7f1e8; font-size: clamp(0.85rem, 2vw, 1.4rem); }
+.tile-8192 { background: #3c3a32; color: #f7f1e8; font-size: clamp(0.85rem, 2vw, 1.4rem); }
+
+.twenty48-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 10px;
+  max-width: 220px;
+}
+
+.twenty48-preview-tile {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  user-select: none;
+}
+
 @media (max-width: 960px) {
   .shell {
     width: min(var(--max-width), calc(100% - 16px));
@@ -1539,7 +1616,8 @@ img {
   .pong-settings-grid,
   .pong-touch-controls,
   .minesweeper-side,
-  .solitaire-side {
+  .solitaire-side,
+  .twenty48-score-row {
     grid-template-columns: 1fr;
   }
 
