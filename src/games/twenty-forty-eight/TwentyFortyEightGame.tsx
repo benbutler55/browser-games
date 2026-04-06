@@ -183,6 +183,28 @@ export function TwentyFortyEightGame() {
           </button>
         </div>
       </div>
+
+      <div className="details-grid">
+        <article className="game-detail">
+          <strong>How to play</strong>
+          <ul className="rule-list">
+            <li>Use arrow keys or swipe to slide all tiles in one direction.</li>
+            <li>When two tiles with the same number collide, they merge into one.</li>
+            <li>A new tile (2 or 4) appears after each move.</li>
+            <li>Reach the 2048 tile to win, then keep going for a higher score.</li>
+          </ul>
+        </article>
+
+        <article className="game-detail">
+          <strong>Tips</strong>
+          <ul className="rule-list">
+            <li>Keep your highest tile in a corner and build around it.</li>
+            <li>Avoid pushing tiles into the center where they get trapped.</li>
+            <li>Use undo to recover from a bad move — up to 20 moves of history are saved.</li>
+            <li>Press R to start a new game at any time.</li>
+          </ul>
+        </article>
+      </div>
     </div>
   )
 }

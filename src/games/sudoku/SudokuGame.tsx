@@ -245,6 +245,28 @@ export function SudokuGame() {
           New game <kbd>R</kbd>
         </button>
       </div>
+
+      <div className="details-grid">
+        <article className="game-detail">
+          <strong>How to play</strong>
+          <ul className="rule-list">
+            <li>Fill every row, column, and 3x3 box with the numbers 1 through 9.</li>
+            <li>Click a cell to select it, then type a number or use the number pad.</li>
+            <li>Use arrow keys to move between cells. Backspace clears a cell.</li>
+            <li>Toggle pencil mode to note possible candidates without committing.</li>
+          </ul>
+        </article>
+
+        <article className="game-detail">
+          <strong>Tips</strong>
+          <ul className="rule-list">
+            <li>Start with rows, columns, or boxes that already have the most numbers filled.</li>
+            <li>Use pencil marks to narrow down options before committing.</li>
+            <li>Red highlights show conflicts — a number repeated in a row, column, or box.</li>
+            <li>Press R to generate a new puzzle at the current difficulty.</li>
+          </ul>
+        </article>
+      </div>
     </div>
   )
 }

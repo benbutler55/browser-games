@@ -263,6 +263,28 @@ export function WordleGame() {
           </div>
         ))}
       </div>
+
+      <div className="details-grid">
+        <article className="game-detail">
+          <strong>How to play</strong>
+          <ul className="rule-list">
+            <li>Guess the five-letter word in six attempts.</li>
+            <li>Type a word and press Enter to submit your guess.</li>
+            <li>Green means the letter is correct and in the right spot.</li>
+            <li>Yellow means the letter is in the word but in the wrong spot.</li>
+            <li>Gray means the letter is not in the word at all.</li>
+          </ul>
+        </article>
+
+        <article className="game-detail">
+          <strong>Tips</strong>
+          <ul className="rule-list">
+            <li>Start with a word that has common letters like E, A, R, S, T.</li>
+            <li>Use the keyboard colors to track which letters you have ruled out.</li>
+            <li>A new word is available each day — progress is saved automatically.</li>
+          </ul>
+        </article>
+      </div>
     </div>
   )
 }

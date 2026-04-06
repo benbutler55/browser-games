@@ -304,6 +304,28 @@ export function TetrisGame() {
           </div>
         </div>
       </div>
+
+      <div className="details-grid">
+        <article className="game-detail">
+          <strong>How to play</strong>
+          <ul className="rule-list">
+            <li>Move falling pieces left and right with arrow keys.</li>
+            <li>Rotate pieces with Up arrow or Z. Hard-drop with X.</li>
+            <li>Complete a full horizontal row to clear it and earn points.</li>
+            <li>The game ends when new pieces can no longer fit on the board.</li>
+          </ul>
+        </article>
+
+        <article className="game-detail">
+          <strong>Tips</strong>
+          <ul className="rule-list">
+            <li>Keep the board flat — avoid leaving deep gaps in one column.</li>
+            <li>The ghost piece shows where your block will land. Use it to plan drops.</li>
+            <li>Speed increases every 10 lines. Clearing four lines at once scores the most.</li>
+            <li>Press Space to pause and R to restart.</li>
+          </ul>
+        </article>
+      </div>
     </div>
   )
 }

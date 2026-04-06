@@ -193,6 +193,28 @@ export function SnakeGame() {
           </button>
         </div>
       </div>
+
+      <div className="details-grid">
+        <article className="game-detail">
+          <strong>How to play</strong>
+          <ul className="rule-list">
+            <li>Steer the snake with arrow keys, WASD, or swipe on mobile.</li>
+            <li>Eat the red food to grow longer and increase your score.</li>
+            <li>Avoid hitting the walls or your own tail — either ends the game.</li>
+            <li>Press Space to pause and resume.</li>
+          </ul>
+        </article>
+
+        <article className="game-detail">
+          <strong>Tips</strong>
+          <ul className="rule-list">
+            <li>Plan a few moves ahead — the longer you get, the less room you have.</li>
+            <li>Hug the edges early so you have open space in the center later.</li>
+            <li>Avoid tight spirals that leave no escape route.</li>
+            <li>Press R to restart at any time.</li>
+          </ul>
+        </article>
+      </div>
     </div>
   )
 }
