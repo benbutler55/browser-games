@@ -10,6 +10,8 @@ import { SnakeGame } from './snake/SnakeGame'
 import { SnakePreview } from './snake/SnakePreview'
 import { TwentyFortyEightGame } from './twenty-forty-eight/TwentyFortyEightGame'
 import { TwentyFortyEightPreview } from './twenty-forty-eight/TwentyFortyEightPreview'
+import { TetrisGame } from './tetris/TetrisGame'
+import { TetrisPreview } from './tetris/TetrisPreview'
 import { WordleGame } from './wordle/WordleGame'
 import { WordlePreview } from './wordle/WordlePreview'
 import type { GameDefinition } from './types'
@@ -147,6 +149,25 @@ export const games: GameDefinition[] = [
     expansionPath: 'Hard mode, streak tracking, share results, and extended word list.',
     preview: WordlePreview,
     playable: WordleGame,
+  },
+  {
+    slug: 'tetris',
+    name: 'Tetris',
+    genre: 'Arcade',
+    status: 'Playable',
+    description:
+      'Classic block-stacking game with seven piece types, rotation, ghost piece preview, and level progression.',
+    tags: ['Realtime', 'Keyboard', 'High score'],
+    highlights: [
+      'Seven piece types with four rotation states and wall kicks.',
+      'Ghost piece shows landing position.',
+      'Level progression speeds up the drop rate.',
+    ],
+    controls: 'Arrow keys to move and rotate, X to hard drop, Space to pause.',
+    initialMode: 'Classic Tetris with score, lines, and level tracking.',
+    expansionPath: 'Hold piece, T-spin detection, and multiplayer.',
+    preview: TetrisPreview,
+    playable: TetrisGame,
   },
 ]
 

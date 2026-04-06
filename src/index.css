@@ -1669,6 +1669,33 @@ img {
   background: rgba(238, 228, 213, 0.4);
 }
 
+.tetris-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(140px, 0.35fr);
+  gap: 18px;
+  align-items: start;
+}
+.tetris-main { display: grid; gap: 18px; }
+.tetris-side { display: grid; gap: 12px; }
+.tetris-board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 2px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 251, 244, 0.78);
+}
+.tetris-cell { aspect-ratio: 1; border-radius: 4px; background: rgba(238, 228, 213, 0.35); }
+.piece-i { background: #00bcd4; }
+.piece-o { background: #ffc107; }
+.piece-t { background: #9c27b0; }
+.piece-s { background: #4caf50; }
+.piece-z { background: #f44336; }
+.piece-j { background: #2196f3; }
+.piece-l { background: #ff9800; }
+.piece-ghost { background: rgba(31, 122, 106, 0.2); border: 1px dashed rgba(31, 122, 106, 0.3); }
+
 @media (max-width: 960px) {
   .shell {
     width: min(var(--max-width), calc(100% - 16px));
@@ -1710,6 +1737,7 @@ img {
   .pong-touch-controls,
   .minesweeper-side,
   .solitaire-side,
+  .tetris-layout,
   .twenty48-score-row {
     grid-template-columns: 1fr;
   }
