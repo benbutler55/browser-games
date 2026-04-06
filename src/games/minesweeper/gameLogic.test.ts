@@ -36,10 +36,7 @@ describe('seedBoard', () => {
 
   it('does not place mines in the safe zone around the clicked cell', () => {
     // Use a small board where safe zone is significant
-    const board = seedBoard(3, 3, 1, 4) // center cell, 3x3 board
-    // Safe zone includes index 4 and all its neighbors (all cells on a 3x3 board)
-    // With only 9 cells and all being safe zone, this is a degenerate case.
-    // Use a bigger board instead.
+    // Use a bigger board where safe zone doesn't cover everything
     const bigBoard = seedBoard(5, 5, 5, 12) // center of 5x5
     const safeIndices = [12, ...getNeighborIndices(12, 5, 5)]
     for (const index of safeIndices) {

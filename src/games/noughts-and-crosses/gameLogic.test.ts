@@ -143,13 +143,6 @@ describe('getBestMove', () => {
 
   it('blocks opponent from winning', () => {
     // X has two in a row at 0,1 - needs to block at 2
-    const board: Board = [
-      'X', 'X', null,
-      'O', 'O', null,
-      null, null, null,
-    ]
-    // AI is X (playing against O who threatens at 5)
-    // Actually let's set up a clearer blocking scenario
     const blockBoard: Board = [
       'X', 'X', null,
       'O', null, null,
