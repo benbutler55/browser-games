@@ -2220,6 +2220,52 @@ img {
   background: #769656;
 }
 
+/* ---------- Go ---------- */
+
+.go-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.go-main {
+  display: grid;
+  gap: 18px;
+}
+
+.go-side {
+  display: grid;
+  gap: 18px;
+}
+
+.go-board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.go-board-svg {
+  width: 100%;
+  max-width: 480px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-strong);
+}
+
+.go-click-target {
+  cursor: pointer;
+}
+
+.go-click-target:hover {
+  fill: rgba(0, 0, 0, 0.08);
+}
+
+.go-preview-board {
+  margin: 12px 0;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+}
+
 @media (max-width: 960px) {
   .shell {
     width: min(var(--max-width), calc(100% - 16px));
@@ -2264,6 +2310,7 @@ img {
   .tetris-layout,
   .sudoku-layout,
   .chess-layout,
+  .go-layout,
   .twenty48-score-row {
     grid-template-columns: 1fr;
   }
