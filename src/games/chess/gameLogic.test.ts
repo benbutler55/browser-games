@@ -11,10 +11,13 @@ import {
   findKing,
   isInCheck,
   applyMove,
+  getGameResult,
+  hasInsufficientMaterial,
   type Board,
   type Cell,
   type Piece,
   type GameState,
+  type GameResult,
   type Move,
   type Position,
 } from './gameLogic'
@@ -548,5 +551,133 @@ describe('castling move generation', () => {
     const moves = getRawMoves(state, [7, 4])
     const castleMove = moves.find((m: Move) => m.castle === 'kingside')
     expect(castleMove).toBeUndefined()
+  })
+})
+
+describe('getGameResult', () => {
+  it('returns null for starting position (game ongoing)', () => {
+    const state = createInitialState()
+    expect(getGameResult(state)).toBeNull()
+  })
+
+  it('detects fool\'s mate (checkmate for black)', () => {
+    // 1. f3 e5 2. g4 Qh4#
+    let state = createInitialState()
+    // 1. f3
+    state = applyMove(state, { from: [6, 5], to: [5, 5] })
+    // 1... e5
+    state = applyMove(state, { from: [1, 4], to: [3, 4] })
+    // 2. g4
+    state = applyMove(state, { from: [6, 6], to: [4, 6] })
+    // 2... Qh4#
+    state = applyMove(state, { from: [0, 3], to: [4, 7] })
+
+    const result = getGameResult(state)
+    expect(result).not.toBeNull()
+    expect(result!.type).toBe('checkmate')
+    if (result!.type === 'checkmate') {
+      expect(result!.winner).toBe('black')
+    }
+  })
+
+  it('detects stalemate (K at a8, Q at b6, K at c2, black to move)', () => {
+    // Black king at a8 (0,0), white queen at b6 (2,1), white king at c2 (6,2)
+    // Black to move — no legal moves but not in check = stalemate
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[2][1] = { type: 'queen', color: 'white' }
+    board[6][2] = { type: 'king', color: 'white' }
+    const state = stateFromBoard(board, 'black')
+    const result = getGameResult(state)
+    expect(result).not.toBeNull()
+    expect(result!.type).toBe('stalemate')
+  })
+
+  it('detects insufficient material: K vs K', () => {
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[7][7] = { type: 'king', color: 'white' }
+    const state = stateFromBoard(board)
+    const result = getGameResult(state)
+    expect(result).not.toBeNull()
+    expect(result!.type).toBe('insufficient_material')
+  })
+
+  it('detects insufficient material: K+B vs K', () => {
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[7][7] = { type: 'king', color: 'white' }
+    board[3][3] = { type: 'bishop', color: 'white' }
+    const state = stateFromBoard(board)
+    const result = getGameResult(state)
+    expect(result).not.toBeNull()
+    expect(result!.type).toBe('insufficient_material')
+  })
+
+  it('detects insufficient material: K+N vs K', () => {
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[7][7] = { type: 'king', color: 'white' }
+    board[3][3] = { type: 'knight', color: 'black' }
+    const state = stateFromBoard(board)
+    const result = getGameResult(state)
+    expect(result).not.toBeNull()
+    expect(result!.type).toBe('insufficient_material')
+  })
+
+  it('does not detect insufficient material with a pawn on the board', () => {
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[7][7] = { type: 'king', color: 'white' }
+    board[3][3] = { type: 'pawn', color: 'white' }
+    const state = stateFromBoard(board)
+    const result = getGameResult(state)
+    // Game is ongoing (not insufficient material)
+    expect(result).toBeNull()
+  })
+})
+
+describe('hasInsufficientMaterial', () => {
+  it('returns true for K vs K', () => {
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[7][7] = { type: 'king', color: 'white' }
+    expect(hasInsufficientMaterial(board)).toBe(true)
+  })
+
+  it('returns true for K+B vs K', () => {
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[7][7] = { type: 'king', color: 'white' }
+    board[4][4] = { type: 'bishop', color: 'white' }
+    expect(hasInsufficientMaterial(board)).toBe(true)
+  })
+
+  it('returns true for K+N vs K', () => {
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[7][7] = { type: 'king', color: 'white' }
+    board[4][4] = { type: 'knight', color: 'black' }
+    expect(hasInsufficientMaterial(board)).toBe(true)
+  })
+
+  it('returns false for K+R vs K', () => {
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[7][7] = { type: 'king', color: 'white' }
+    board[4][4] = { type: 'rook', color: 'white' }
+    expect(hasInsufficientMaterial(board)).toBe(false)
+  })
+
+  it('returns false for K+Q vs K', () => {
+    const board = emptyBoard()
+    board[0][0] = { type: 'king', color: 'black' }
+    board[7][7] = { type: 'king', color: 'white' }
+    board[4][4] = { type: 'queen', color: 'white' }
+    expect(hasInsufficientMaterial(board)).toBe(false)
+  })
+
+  it('returns false for starting position', () => {
+    expect(hasInsufficientMaterial(createInitialBoard())).toBe(false)
   })
 })

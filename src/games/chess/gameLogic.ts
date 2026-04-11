@@ -487,3 +487,52 @@ export function getAllLegalMoves(state: GameState): Move[] {
   }
   return moves
 }
+
+export type GameResult =
+  | { type: 'checkmate'; winner: Color }
+  | { type: 'stalemate' }
+  | { type: 'insufficient_material' }
+
+export function hasInsufficientMaterial(board: Board): boolean {
+  const pieces: Piece[] = []
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const piece = board[r][c]
+      if (piece) {
+        pieces.push(piece)
+      }
+    }
+  }
+
+  // K vs K
+  if (pieces.length === 2) return true
+
+  // K+B vs K or K+N vs K
+  if (pieces.length === 3) {
+    const nonKing = pieces.find((p) => p.type !== 'king')
+    if (nonKing && (nonKing.type === 'bishop' || nonKing.type === 'knight')) {
+      return true
+    }
+  }
+
+  return false
+}
+
+export function getGameResult(state: GameState): GameResult | null {
+  // Check for insufficient material first (can happen regardless of whose turn it is)
+  if (hasInsufficientMaterial(state.board)) {
+    return { type: 'insufficient_material' }
+  }
+
+  const legalMoves = getAllLegalMoves(state)
+
+  if (legalMoves.length === 0) {
+    // No legal moves — is it checkmate or stalemate?
+    if (isInCheck(state.board, state.turn)) {
+      return { type: 'checkmate', winner: opponent(state.turn) }
+    }
+    return { type: 'stalemate' }
+  }
+
+  return null
+}
