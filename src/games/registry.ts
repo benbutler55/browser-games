@@ -1,5 +1,7 @@
 import { ChessGame } from './chess/ChessGame'
 import { ChessPreview } from './chess/ChessPreview'
+import { GoGame } from './go/GoGame'
+import { GoPreview } from './go/GoPreview'
 import { MinesweeperGame } from './minesweeper/MinesweeperGame'
 import { MinesweeperPreview } from './minesweeper/MinesweeperPreview'
 import { NoughtsAndCrossesGame } from './noughts-and-crosses/NoughtsAndCrossesGame'
@@ -210,6 +212,25 @@ export const games: GameDefinition[] = [
     expansionPath: 'Move history notation, undo, opening book, and timed matches.',
     preview: ChessPreview,
     playable: ChessGame,
+  },
+  {
+    slug: 'go',
+    name: 'Go',
+    genre: 'Strategy',
+    status: 'Playable',
+    description:
+      'Classic Go on a 9x9 board with territory scoring, ko rule, and suicide prevention. Three AI difficulty levels powered by Monte Carlo tree search.',
+    tags: ['Turn-based', 'AI opponent', 'Strategy'],
+    highlights: [
+      'Full Go rules including captures, ko, and suicide prevention.',
+      'Territory scoring with komi compensation for White.',
+      'MCTS-based AI with easy, medium, and hard difficulty levels.',
+    ],
+    controls: 'Click an empty intersection to place a stone. Use buttons to pass or resign.',
+    initialMode: 'Two-player local play or vs computer with adjustable difficulty.',
+    expansionPath: 'Larger board sizes, game review, move tree, and SGF export.',
+    preview: GoPreview,
+    playable: GoGame,
   },
 ]
 
