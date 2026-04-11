@@ -5,6 +5,11 @@ import {
   opponentColor,
   getGroup,
   getLiberties,
+  placeStone,
+  pass,
+  calculateScore,
+  getTerritory,
+  boardsEqual,
   type GoBoard,
   type GoState,
 } from './gameLogic'
@@ -133,5 +138,237 @@ describe('getLiberties', () => {
     state.board[4][3] = 'white'
     state.board[4][5] = 'white'
     expect(getLiberties(state.board, [4, 4])).toBe(0)
+  })
+})
+
+describe('placeStone', () => {
+  it('places a stone and switches turn', () => {
+    const state = createInitialState()
+    const result = placeStone(state, [4, 4])
+    expect(result).not.toBeNull()
+    expect(result!.board[4][4]).toBe('black')
+    expect(result!.turn).toBe('white')
+  })
+
+  it('returns null when placing on an occupied intersection', () => {
+    const state = createInitialState()
+    state.board[4][4] = 'black'
+    const result = placeStone(state, [4, 4])
+    expect(result).toBeNull()
+  })
+
+  it('captures a surrounded opponent stone (4 black around 1 white)', () => {
+    const state = createInitialState()
+    // White stone in the center
+    state.board[4][4] = 'white'
+    // Black stones on 3 sides
+    state.board[3][4] = 'black'
+    state.board[5][4] = 'black'
+    state.board[4][3] = 'black'
+    // Black to play the last surrounding stone
+    state.turn = 'black'
+    const result = placeStone(state, [4, 5])
+    expect(result).not.toBeNull()
+    expect(result!.board[4][4]).toBeNull() // white stone captured
+    expect(result!.board[4][5]).toBe('black') // new black stone placed
+    expect(result!.captures.black).toBe(1)
+  })
+
+  it('captures a group of 2 opponent stones', () => {
+    const state = createInitialState()
+    // Two white stones in a row
+    state.board[4][4] = 'white'
+    state.board[4][5] = 'white'
+    // Black stones surrounding them
+    state.board[3][4] = 'black'
+    state.board[3][5] = 'black'
+    state.board[5][4] = 'black'
+    state.board[5][5] = 'black'
+    state.board[4][3] = 'black'
+    // Black plays the last surrounding position
+    state.turn = 'black'
+    const result = placeStone(state, [4, 6])
+    expect(result).not.toBeNull()
+    expect(result!.board[4][4]).toBeNull()
+    expect(result!.board[4][5]).toBeNull()
+    expect(result!.captures.black).toBe(2)
+  })
+
+  it('returns null for suicide move (playing into surrounded position with no captures)', () => {
+    const state = createInitialState()
+    // White stones surrounding the center
+    state.board[3][4] = 'white'
+    state.board[5][4] = 'white'
+    state.board[4][3] = 'white'
+    state.board[4][5] = 'white'
+    // Black tries to play into the center (suicide)
+    state.turn = 'black'
+    const result = placeStone(state, [4, 4])
+    expect(result).toBeNull()
+  })
+
+  it('detects ko and prevents immediate recapture', () => {
+    // Set up the ko position:
+    //     col: 0 1 2 3
+    // row0: .  B  W  .
+    // row1: B  W  .  W
+    // row2: .  B  W  .
+    const state = createInitialState()
+    state.board[0][1] = 'black'
+    state.board[0][2] = 'white'
+    state.board[1][0] = 'black'
+    state.board[1][1] = 'white'
+    state.board[1][3] = 'white'
+    state.board[2][1] = 'black'
+    state.board[2][2] = 'white'
+    state.turn = 'black'
+
+    // Black plays (1,2) capturing white at (1,1)
+    const afterBlackCapture = placeStone(state, [1, 2])
+    expect(afterBlackCapture).not.toBeNull()
+    expect(afterBlackCapture!.board[1][1]).toBeNull() // white captured
+    expect(afterBlackCapture!.board[1][2]).toBe('black') // black placed
+    expect(afterBlackCapture!.captures.black).toBe(1)
+
+    // White tries (1,1) to recapture - should be rejected (ko)
+    const koAttempt = placeStone(afterBlackCapture!, [1, 1])
+    expect(koAttempt).toBeNull()
+  })
+
+  it('records the move in moveHistory', () => {
+    const state = createInitialState()
+    const result = placeStone(state, [4, 4])
+    expect(result).not.toBeNull()
+    expect(result!.moveHistory).toContainEqual([4, 4])
+  })
+
+  it('returns null when game is over', () => {
+    const state = createInitialState()
+    state.gameOver = true
+    const result = placeStone(state, [4, 4])
+    expect(result).toBeNull()
+  })
+})
+
+describe('pass', () => {
+  it('switches turn on pass', () => {
+    const state = createInitialState()
+    const result = pass(state)
+    expect(result.turn).toBe('white')
+  })
+
+  it('increments consecutivePasses', () => {
+    const state = createInitialState()
+    const result = pass(state)
+    expect(result.consecutivePasses).toBe(1)
+  })
+
+  it('two consecutive passes end the game', () => {
+    const state = createInitialState()
+    const afterFirst = pass(state)
+    expect(afterFirst.gameOver).toBe(false)
+    const afterSecond = pass(afterFirst)
+    expect(afterSecond.gameOver).toBe(true)
+    expect(afterSecond.consecutivePasses).toBe(2)
+  })
+
+  it('clears previousBoard (passing clears ko)', () => {
+    const state = createInitialState()
+    state.previousBoard = cloneBoard(state.board)
+    const result = pass(state)
+    expect(result.previousBoard).toBeNull()
+  })
+})
+
+describe('boardsEqual', () => {
+  it('returns true for identical boards', () => {
+    const state = createInitialState()
+    const clone = cloneBoard(state.board)
+    expect(boardsEqual(state.board, clone)).toBe(true)
+  })
+
+  it('returns false for different boards', () => {
+    const state = createInitialState()
+    const clone = cloneBoard(state.board)
+    clone[4][4] = 'black'
+    expect(boardsEqual(state.board, clone)).toBe(false)
+  })
+})
+
+describe('calculateScore', () => {
+  it('empty board scores 0 black, 6.5 white (komi)', () => {
+    const state = createInitialState()
+    const score = calculateScore(state.board)
+    expect(score.black).toBe(0)
+    expect(score.white).toBe(6.5)
+  })
+
+  it('board with 4 black stones and no territory scores 4 black', () => {
+    // Place both colors so empty regions are contested (not owned by either)
+    const state = createInitialState()
+    state.board[4][4] = 'black'
+    state.board[4][5] = 'black'
+    state.board[4][6] = 'black'
+    state.board[4][7] = 'black'
+    state.board[0][0] = 'white' // white stone makes empty regions contested
+    const score = calculateScore(state.board)
+    expect(score.black).toBe(4)
+    // White gets 1 stone + 6.5 komi
+    expect(score.white).toBe(7.5)
+  })
+
+  it('counts territory for a color that fully encloses an empty region', () => {
+    // Create a small enclosed territory for black in the corner
+    // Black walls off the (0,0) corner:
+    //   . B . . . . . . .
+    //   B B . . . . . . .
+    //   . . . . . . . . .
+    const state = createInitialState()
+    state.board[0][1] = 'black'
+    state.board[1][0] = 'black'
+    state.board[1][1] = 'black'
+    const score = calculateScore(state.board)
+    // (0,0) is enclosed by black -> 1 territory point
+    // Black stones: 3 + territory: 1 = 4
+    // But the rest of the board is a huge empty region bordered by black only
+    // Actually, let me think about this more carefully...
+    // The empty region containing (0,0) is just {(0,0)} bordered by black on two sides and board edge on two sides
+    // The rest of the empty cells form one large region bordered by black only (no white stones)
+    // So all empty = territory for black
+    // Total: 3 stones + (81 - 3) = 81 territory... that's the whole board
+    // Actually: 3 black stones + 78 empty cells all bordered only by black = 81
+    expect(score.black).toBe(81)
+    expect(score.white).toBe(6.5)
+  })
+})
+
+describe('getTerritory', () => {
+  it('returns a board showing territory ownership', () => {
+    const state = createInitialState()
+    const territory = getTerritory(state.board)
+    expect(territory).toHaveLength(9)
+    for (const row of territory) {
+      expect(row).toHaveLength(9)
+    }
+  })
+
+  it('marks enclosed empty region as territory for the surrounding color', () => {
+    // Black encloses corner (0,0)
+    const state = createInitialState()
+    state.board[0][1] = 'black'
+    state.board[1][0] = 'black'
+    state.board[1][1] = 'black'
+    const territory = getTerritory(state.board)
+    expect(territory[0][0]).toBe('black')
+  })
+
+  it('marks contested empty regions as null', () => {
+    // Both colors border a region
+    const state = createInitialState()
+    state.board[0][0] = 'black'
+    state.board[0][8] = 'white'
+    const territory = getTerritory(state.board)
+    // The large empty region is bordered by both colors
+    expect(territory[4][4]).toBeNull()
   })
 })
