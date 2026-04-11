@@ -13,7 +13,7 @@ export interface GoState {
   moveHistory: Position[]
 }
 
-const BOARD_SIZE = 9
+export const BOARD_SIZE = 9
 
 export function createInitialState(): GoState {
   const board: GoBoard = Array.from({ length: BOARD_SIZE }, () =>
@@ -115,6 +115,9 @@ export function placeStone(state: GoState, pos: Position): GoState | null {
 
   const [row, col] = pos
 
+  // Must be within bounds
+  if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) return null
+
   // Must be empty intersection
   if (state.board[row][col] !== null) return null
 
@@ -172,7 +175,7 @@ export function placeStone(state: GoState, pos: Position): GoState | null {
 export function pass(state: GoState): GoState {
   const newConsecutivePasses = state.consecutivePasses + 1
   return {
-    board: cloneBoard(state.board),
+    board: state.board,
     turn: opponentColor(state.turn),
     captures: { ...state.captures },
     previousBoard: null,

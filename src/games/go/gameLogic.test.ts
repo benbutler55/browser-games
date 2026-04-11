@@ -328,15 +328,8 @@ describe('calculateScore', () => {
     state.board[1][0] = 'black'
     state.board[1][1] = 'black'
     const score = calculateScore(state.board)
-    // (0,0) is enclosed by black -> 1 territory point
-    // Black stones: 3 + territory: 1 = 4
-    // But the rest of the board is a huge empty region bordered by black only
-    // Actually, let me think about this more carefully...
-    // The empty region containing (0,0) is just {(0,0)} bordered by black on two sides and board edge on two sides
-    // The rest of the empty cells form one large region bordered by black only (no white stones)
-    // So all empty = territory for black
-    // Total: 3 stones + (81 - 3) = 81 territory... that's the whole board
-    // Actually: 3 black stones + 78 empty cells all bordered only by black = 81
+    // All empty cells are bordered only by black (no white stones on the board),
+    // so the entire board counts as black territory: 3 stones + 78 empty = 81
     expect(score.black).toBe(81)
     expect(score.white).toBe(6.5)
   })
