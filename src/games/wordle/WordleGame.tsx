@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { evaluateGuess, getWordForDate, isValidWord } from './gameLogic'
+import { evaluateGuess, getRandomWord, getWordForDate, isValidWord } from './gameLogic'
 import type { LetterResult } from './gameLogic'
 import { answers, dictionary } from './words'
 
@@ -64,7 +64,7 @@ function saveStats(stats: Stats) {
 }
 
 export function WordleGame() {
-  const [answer] = useState(() => getWordForDate(answers, new Date()))
+  const [answer, setAnswer] = useState(() => getWordForDate(answers, new Date()))
   const [state, setState] = useState<GameState>(() => loadState(answer))
   const [stats, setStats] = useState<Stats>(loadStats)
   const [message, setMessage] = useState('')
@@ -178,13 +178,14 @@ export function WordleGame() {
   }
 
   const newGame = () => {
-    // Reset for today (mostly useful after win/loss to review)
+    const nextAnswer = getRandomWord(answers)
+    setAnswer(nextAnswer)
     const fresh: GameState = {
       guesses: [],
       results: [],
       current: '',
       status: 'playing',
-      answer,
+      answer: nextAnswer,
     }
     setState(fresh)
     saveState(fresh)

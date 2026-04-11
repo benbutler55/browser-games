@@ -32,6 +32,10 @@ export function getWordForDate(words: string[], date: Date): string {
   return words[((dayIndex % words.length) + words.length) % words.length]
 }
 
+export function getRandomWord(words: string[]): string {
+  return words[Math.floor(Math.random() * words.length)]
+}
+
 export function isValidWord(word: string, dictionary: Set<string>): boolean {
   return dictionary.has(word.toLowerCase())
 }
