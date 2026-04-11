@@ -7,12 +7,12 @@ export function HomePage() {
     <>
       <section className="hero hero-single">
         <div className="panel hero-copy">
-          <span className="eyebrow">Nine games ready to play</span>
+          <span className="eyebrow">Eleven games ready to play</span>
           <h1>Choose a game and jump straight in.</h1>
           <p>
             Pong, Minesweeper, Noughts and Crosses, Solitaire, 2048, Snake,
-            Wordle, Tetris, and Sudoku all run directly in the browser with a
-            simple, static, local-friendly setup.
+            Wordle, Tetris, Sudoku, Chess, and Go all run directly in the
+            browser with a simple, static, local-friendly setup.
           </p>
           <div className="hero-actions">
             <Link to="/games/pong" className="primary-button">
@@ -24,8 +24,8 @@ export function HomePage() {
           </div>
           <div className="hero-grid">
             <article className="stat-card">
-              <strong>9 games</strong>
-              <p>All nine games now playable across two release waves.</p>
+              <strong>11 games</strong>
+              <p>All eleven games now playable across three release waves.</p>
             </article>
             <article className="stat-card">
               <strong>Static</strong>
