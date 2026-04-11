@@ -11,7 +11,7 @@ Browser Games is a static web app for hosting a growing collection of polished, 
 
 ## Current status
 
-The repo now contains the shared application foundation plus nine playable games:
+The repo now contains the shared application foundation plus eleven playable games:
 
 - shared app shell and navigation
 - game registry for future expansion
@@ -25,9 +25,11 @@ The repo now contains the shared application foundation plus nine playable games
 - a fully playable `Wordle` game with daily puzzles, keyboard input, and colour-coded feedback
 - a fully playable `Tetris` game with piece rotation, line clearing, level progression, and ghost piece
 - a fully playable `Sudoku` game with multiple difficulty levels, note-taking, and validation
+- a fully playable `Chess` game with complete rules, castling, en passant, promotion, and three AI difficulty levels using alpha-beta pruning
+- a fully playable `Go` game on a 9x9 board with territory scoring, ko rule, and three AI difficulty levels using Monte Carlo tree search
 - dark mode toggle with system preference detection
 - shared hooks: `useGameTimer`, `useGameStats`, `useKeyboardShortcut`, `useSound`
-- Vitest test suite with 163 tests across all games
+- Vitest test suite with 264 tests across all games
 - responsive styling and static-hosting-safe routing
 - CI and GitHub Pages deployment workflows in `.github/workflows/`
 
@@ -42,6 +44,8 @@ The repo now contains the shared application foundation plus nine playable games
 - Wordle
 - Tetris
 - Sudoku
+- Chess
+- Go
 
 ## Project structure
 
@@ -54,6 +58,8 @@ src/
   components/     # reusable UI building blocks
   games/
     2048/                  # game-specific modules
+    chess/
+    go/
     minesweeper/
     noughts-and-crosses/
     pong/
