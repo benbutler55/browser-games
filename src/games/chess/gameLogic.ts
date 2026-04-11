@@ -36,6 +36,18 @@ export type GameState = {
 
 const BACK_RANK: PieceType[] = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook']
 
+const KNIGHT_OFFSETS: [number, number][] = [
+  [-2, -1], [-2, 1], [-1, -2], [-1, 2],
+  [1, -2], [1, 2], [2, -1], [2, 1],
+]
+const ROOK_DIRS: [number, number][] = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+const BISHOP_DIRS: [number, number][] = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
+const KING_OFFSETS: [number, number][] = [
+  [-1, -1], [-1, 0], [-1, 1],
+  [0, -1],           [0, 1],
+  [1, -1],  [1, 0],  [1, 1],
+]
+
 export function createInitialBoard(): Board {
   const board: Board = []
 
@@ -105,11 +117,7 @@ export function isSquareAttacked(board: Board, pos: Position, byColor: Color): b
   const [row, col] = pos
 
   // Knight attacks
-  const knightOffsets: [number, number][] = [
-    [-2, -1], [-2, 1], [-1, -2], [-1, 2],
-    [1, -2], [1, 2], [2, -1], [2, 1],
-  ]
-  for (const [dr, dc] of knightOffsets) {
+  for (const [dr, dc] of KNIGHT_OFFSETS) {
     const r = row + dr
     const c = col + dc
     if (inBounds(r, c)) {
@@ -121,10 +129,7 @@ export function isSquareAttacked(board: Board, pos: Position, byColor: Color): b
   }
 
   // Sliding attacks (rook/bishop/queen)
-  const rookDirs: [number, number][] = [[-1, 0], [1, 0], [0, -1], [0, 1]]
-  const bishopDirs: [number, number][] = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
-
-  for (const [dr, dc] of rookDirs) {
+  for (const [dr, dc] of ROOK_DIRS) {
     for (let dist = 1; dist < 8; dist++) {
       const r = row + dr * dist
       const c = col + dc * dist
@@ -139,7 +144,7 @@ export function isSquareAttacked(board: Board, pos: Position, byColor: Color): b
     }
   }
 
-  for (const [dr, dc] of bishopDirs) {
+  for (const [dr, dc] of BISHOP_DIRS) {
     for (let dist = 1; dist < 8; dist++) {
       const r = row + dr * dist
       const c = col + dc * dist
@@ -155,16 +160,13 @@ export function isSquareAttacked(board: Board, pos: Position, byColor: Color): b
   }
 
   // King attacks (adjacent squares)
-  for (let dr = -1; dr <= 1; dr++) {
-    for (let dc = -1; dc <= 1; dc++) {
-      if (dr === 0 && dc === 0) continue
-      const r = row + dr
-      const c = col + dc
-      if (inBounds(r, c)) {
-        const piece = board[r][c]
-        if (piece && piece.color === byColor && piece.type === 'king') {
-          return true
-        }
+  for (const [dr, dc] of KING_OFFSETS) {
+    const r = row + dr
+    const c = col + dc
+    if (inBounds(r, c)) {
+      const piece = board[r][c]
+      if (piece && piece.color === byColor && piece.type === 'king') {
+        return true
       }
     }
   }
@@ -283,29 +285,19 @@ export function getRawMoves(state: GameState, from: Position): Move[] {
 
   switch (piece.type) {
     case 'rook': {
-      const dirs: [number, number][] = [[-1, 0], [1, 0], [0, -1], [0, 1]]
-      addSlidingMoves(board, from, color, dirs, moves)
+      addSlidingMoves(board, from, color, ROOK_DIRS, moves)
       break
     }
     case 'bishop': {
-      const dirs: [number, number][] = [[-1, -1], [-1, 1], [1, -1], [1, 1]]
-      addSlidingMoves(board, from, color, dirs, moves)
+      addSlidingMoves(board, from, color, BISHOP_DIRS, moves)
       break
     }
     case 'queen': {
-      const dirs: [number, number][] = [
-        [-1, 0], [1, 0], [0, -1], [0, 1],
-        [-1, -1], [-1, 1], [1, -1], [1, 1],
-      ]
-      addSlidingMoves(board, from, color, dirs, moves)
+      addSlidingMoves(board, from, color, [...ROOK_DIRS, ...BISHOP_DIRS], moves)
       break
     }
     case 'knight': {
-      const offsets: [number, number][] = [
-        [-2, -1], [-2, 1], [-1, -2], [-1, 2],
-        [1, -2], [1, 2], [2, -1], [2, 1],
-      ]
-      for (const [dr, dc] of offsets) {
+      for (const [dr, dc] of KNIGHT_OFFSETS) {
         const r = from[0] + dr
         const c = from[1] + dc
         if (inBounds(r, c)) {
@@ -319,16 +311,13 @@ export function getRawMoves(state: GameState, from: Position): Move[] {
     }
     case 'king': {
       // Normal king moves
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          if (dr === 0 && dc === 0) continue
-          const r = from[0] + dr
-          const c = from[1] + dc
-          if (inBounds(r, c)) {
-            const target = board[r][c]
-            if (!target || target.color !== color) {
-              moves.push({ from, to: [r, c] })
-            }
+      for (const [dr, dc] of KING_OFFSETS) {
+        const r = from[0] + dr
+        const c = from[1] + dc
+        if (inBounds(r, c)) {
+          const target = board[r][c]
+          if (!target || target.color !== color) {
+            moves.push({ from, to: [r, c] })
           }
         }
       }

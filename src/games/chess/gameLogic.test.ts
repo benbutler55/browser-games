@@ -14,10 +14,8 @@ import {
   getGameResult,
   hasInsufficientMaterial,
   type Board,
-  type Cell,
   type Piece,
   type GameState,
-  type GameResult,
   type Move,
   type Position,
 } from './gameLogic'
