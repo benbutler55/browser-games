@@ -1,3 +1,5 @@
+import { ChessGame } from './chess/ChessGame'
+import { ChessPreview } from './chess/ChessPreview'
 import { MinesweeperGame } from './minesweeper/MinesweeperGame'
 import { MinesweeperPreview } from './minesweeper/MinesweeperPreview'
 import { NoughtsAndCrossesGame } from './noughts-and-crosses/NoughtsAndCrossesGame'
@@ -189,6 +191,25 @@ export const games: GameDefinition[] = [
     expansionPath: 'Hints, undo support, and puzzle rating.',
     preview: SudokuPreview,
     playable: SudokuGame,
+  },
+  {
+    slug: 'chess',
+    name: 'Chess',
+    genre: 'Strategy',
+    status: 'Playable',
+    description:
+      'Full chess with castling, en passant, promotion, and checkmate detection. Three AI difficulty levels powered by alpha-beta pruning.',
+    tags: ['Turn-based', 'AI opponent', 'Strategy'],
+    highlights: [
+      'Complete chess rules including castling, en passant, and pawn promotion.',
+      'Three AI difficulty levels using alpha-beta search with piece-square tables.',
+      'Local two-player and vs computer modes with score tracking.',
+    ],
+    controls: 'Click to select a piece, then click a highlighted square to move.',
+    initialMode: 'Two-player local play or vs computer with adjustable difficulty.',
+    expansionPath: 'Move history notation, undo, opening book, and timed matches.',
+    preview: ChessPreview,
+    playable: ChessGame,
   },
 ]
 
