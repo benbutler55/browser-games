@@ -10,8 +10,6 @@ import {
   calculateScore,
   getTerritory,
   boardsEqual,
-  type GoBoard,
-  type GoState,
 } from './gameLogic'
 
 describe('createInitialState', () => {

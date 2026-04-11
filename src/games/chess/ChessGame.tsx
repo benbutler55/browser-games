@@ -6,7 +6,6 @@ import {
   applyMove,
   getGameResult,
   isInCheck,
-  opponent,
   type Color,
   type GameState,
   type Move,

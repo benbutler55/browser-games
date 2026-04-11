@@ -1,12 +1,8 @@
+import type { GoState, Position, StoneColor } from './gameLogic'
 import {
-  GoState,
-  GoBoard,
-  Position,
-  StoneColor,
   placeStone,
   pass,
   calculateScore,
-  opponentColor,
   cloneBoard,
 } from './gameLogic'
 

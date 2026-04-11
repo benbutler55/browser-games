@@ -17,7 +17,6 @@ import {
   type Piece,
   type GameState,
   type Move,
-  type Position,
 } from './gameLogic'
 
 describe('createInitialBoard', () => {

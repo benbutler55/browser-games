@@ -1,5 +1,5 @@
-import type { GameState, Move, Color, Board, PieceType } from './gameLogic'
-import { getAllLegalMoves, applyMove, getGameResult, isInCheck, opponent } from './gameLogic'
+import type { GameState, Move, Board, PieceType } from './gameLogic'
+import { getAllLegalMoves, applyMove, getGameResult } from './gameLogic'
 
 export type Difficulty = 'easy' | 'medium' | 'hard'
 

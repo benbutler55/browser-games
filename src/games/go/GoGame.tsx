@@ -172,7 +172,7 @@ export function GoGame() {
   }
 
   function renderGridLines() {
-    const lines: JSX.Element[] = []
+    const lines: React.JSX.Element[] = []
 
     // Horizontal lines
     for (let r = 0; r < BOARD_SIZE; r++) {
@@ -220,7 +220,7 @@ export function GoGame() {
   }
 
   function renderStones() {
-    const stones: JSX.Element[] = []
+    const stones: React.JSX.Element[] = []
 
     for (let r = 0; r < BOARD_SIZE; r++) {
       for (let c = 0; c < BOARD_SIZE; c++) {
@@ -264,7 +264,7 @@ export function GoGame() {
   function renderTerritory() {
     if (!territory) return null
 
-    const markers: JSX.Element[] = []
+    const markers: React.JSX.Element[] = []
     const size = CELL_SIZE * 0.22
 
     for (let r = 0; r < BOARD_SIZE; r++) {
@@ -292,7 +292,7 @@ export function GoGame() {
   function renderClickTargets() {
     if (isRoundOver || isAiTurn) return null
 
-    const targets: JSX.Element[] = []
+    const targets: React.JSX.Element[] = []
 
     for (let r = 0; r < BOARD_SIZE; r++) {
       for (let c = 0; c < BOARD_SIZE; c++) {
