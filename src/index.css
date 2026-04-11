@@ -1369,9 +1369,57 @@ img {
 
 /* ── Wordle ────────────────────────────────────────── */
 
-.wordle-layout { display: grid; gap: 18px; max-width: 500px; margin: 0 auto; }
+.wordle-layout { display: grid; gap: 18px; max-width: 500px; margin: 0 auto; position: relative; }
 .wordle-board { display: grid; gap: 8px; justify-items: center; }
 .wordle-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: 100%; }
+
+.game-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.game-stats-row {
+  display: flex;
+  gap: 16px;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.game-action-btn {
+  min-height: 40px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #f7f1e8;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 160ms ease;
+}
+
+.game-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.game-status-banner {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: var(--heading);
+  color: var(--bg);
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
 
 .wordle-cell {
   display: grid; place-items: center; aspect-ratio: 1;
