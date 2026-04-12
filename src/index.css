@@ -1421,6 +1421,30 @@ img {
   pointer-events: none;
 }
 
+.wordle-enter-btn {
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #f7f1e8;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.wordle-enter-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: var(--accent-strong);
+}
+
+.wordle-enter-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .wordle-cell {
   display: grid; place-items: center; aspect-ratio: 1;
   border: 2px solid var(--border-strong); border-radius: 10px;

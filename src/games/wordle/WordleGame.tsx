@@ -242,15 +242,24 @@ export function WordleGame() {
         })}
       </div>
 
+      <button
+        className="wordle-enter-btn"
+        onClick={submitGuess}
+        type="button"
+        disabled={state.status !== 'playing'}
+      >
+        Submit guess
+      </button>
+
       <div className="wordle-keyboard">
         {KEYBOARD_ROWS.map((row, ri) => (
           <div key={ri} className="wordle-key-row">
             {row.map((key) => {
-              const isWide = key === 'ENTER' || key === 'BACK'
+              if (key === 'ENTER') return null
               const ls = letterStates[key]
               const cls = [
                 'wordle-key',
-                isWide ? 'wordle-key-wide' : '',
+                key === 'BACK' ? 'wordle-key-wide' : '',
                 ls ? `wordle-${ls}` : '',
               ]
                 .filter(Boolean)
@@ -270,7 +279,8 @@ export function WordleGame() {
           <strong>How to play</strong>
           <ul className="rule-list">
             <li>Guess the five-letter word in six attempts.</li>
-            <li>Type a word and press Enter to submit your guess.</li>
+            <li>Type a five-letter word, then press the <strong>Submit guess</strong> button (or the Enter key) to check it.</li>
+            <li>You must submit each guess — letters won't be checked until you do.</li>
             <li>Green means the letter is correct and in the right spot.</li>
             <li>Yellow means the letter is in the word but in the wrong spot.</li>
             <li>Gray means the letter is not in the word at all.</li>
