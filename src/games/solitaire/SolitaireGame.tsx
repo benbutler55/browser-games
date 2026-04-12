@@ -21,6 +21,7 @@ import type { GameState, Selection } from './gameLogic'
 
 export function SolitaireGame() {
   const [wins, setWins] = useLocalStorage<number>('solitaire-wins', 0)
+  const [losses, setLosses] = useLocalStorage<number>('solitaire-losses', 0)
   const [gameState, setGameState] = useState<GameState>(() => createInitialGame())
   const [selection, setSelection] = useState<Selection | null>(null)
   const [dragSelection, setDragSelection] = useState<Selection | null>(null)
@@ -28,6 +29,7 @@ export function SolitaireGame() {
   const [moves, setMoves] = useState(0)
   const [seconds, setSeconds] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
+  const [lossRecorded, setLossRecorded] = useState(false)
 
   const won = useMemo(() => isWon(gameState), [gameState])
   const lost = useMemo(() => !won && !hasLegalMove(gameState), [gameState, won])
@@ -57,6 +59,14 @@ export function SolitaireGame() {
         ? 'No stock cards remain. Work the tableau and foundations to finish the deal.'
         : 'Click the stock to draw. Select or drag a waste card, foundation card, or tableau run onto a valid target.'
 
+  // Record loss when no legal moves remain
+  useEffect(() => {
+    if (lost && !lossRecorded) {
+      setLosses((l) => l + 1)
+      setLossRecorded(true)
+    }
+  }, [lost, lossRecorded, setLosses])
+
   function commitState(nextState: GameState, moveCount = 1) {
     if (!won && isWon(nextState)) {
       setWins((currentWins) => currentWins + 1)
@@ -71,6 +81,11 @@ export function SolitaireGame() {
   }
 
   function resetGame() {
+    // Count unfinished game as a loss
+    if (hasStarted && !won && !lossRecorded) {
+      setLosses((l) => l + 1)
+    }
+
     setGameState(createInitialGame())
     setSelection(null)
     setDragSelection(null)
@@ -78,6 +93,12 @@ export function SolitaireGame() {
     setMoves(0)
     setSeconds(0)
     setHasStarted(false)
+    setLossRecorded(false)
+  }
+
+  function resetStats() {
+    setWins(0)
+    setLosses(0)
   }
 
   function handleStockClick() {
@@ -303,6 +324,9 @@ export function SolitaireGame() {
           <button className="ghost-button" onClick={() => setSelection(null)} type="button">
             Clear selection
           </button>
+          <button className="ghost-button" onClick={resetStats} type="button">
+            Reset stats
+          </button>
         </div>
       </div>
 
@@ -320,6 +344,10 @@ export function SolitaireGame() {
             <article className="score-card">
               <span className="score-label">Wins</span>
               <strong>{wins}</strong>
+            </article>
+            <article className="score-card">
+              <span className="score-label">Losses</span>
+              <strong>{losses}</strong>
             </article>
             <article className="score-card">
               <span className="score-label">Stock</span>
