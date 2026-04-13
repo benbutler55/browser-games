@@ -59,17 +59,15 @@ export function SolitaireGame() {
         ? 'No stock cards remain. Work the tableau and foundations to finish the deal.'
         : 'Click the stock to draw. Select or drag a waste card, foundation card, or tableau run onto a valid target.'
 
-  // Record loss when no legal moves remain
-  useEffect(() => {
-    if (lost && !lossRecorded) {
-      setLosses((l) => l + 1)
-      setLossRecorded(true)
-    }
-  }, [lost, lossRecorded, setLosses])
-
   function commitState(nextState: GameState, moveCount = 1) {
     if (!won && isWon(nextState)) {
       setWins((currentWins) => currentWins + 1)
+    }
+
+    // Record loss when no legal moves remain after this state change
+    if (!lossRecorded && !isWon(nextState) && !hasLegalMove(nextState)) {
+      setLosses((l) => l + 1)
+      setLossRecorded(true)
     }
 
     setGameState(nextState)
