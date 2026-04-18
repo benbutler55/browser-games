@@ -2386,6 +2386,148 @@ img {
   border: 2px solid var(--border);
 }
 
+/* ---------- Battleships ---------- */
+
+.battleships-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.battleships-main,
+.battleships-side {
+  display: grid;
+  gap: 18px;
+}
+
+.battleships-setup {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.battleships-setup-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.battleships-setup-row span {
+  color: var(--text-soft);
+}
+
+.battleships-ship-picker,
+.battleships-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.battleships-board-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.battleships-board-panel {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 251, 242, 0.7);
+}
+
+.battleships-board-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-soft);
+}
+
+.battleships-board-heading strong {
+  color: var(--heading);
+}
+
+.battleships-board {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.battleships-cell {
+  aspect-ratio: 1;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: rgba(172, 205, 228, 0.3);
+  transition: transform 120ms ease, border-color 120ms ease, background-color 120ms ease;
+  padding: 0;
+}
+
+.battleships-cell:enabled:hover {
+  transform: translateY(-1px);
+  border-color: rgba(31, 122, 106, 0.45);
+  background: rgba(172, 205, 228, 0.45);
+}
+
+.battleships-cell.water {
+  background: rgba(172, 205, 228, 0.3);
+}
+
+.battleships-cell.ship {
+  background: linear-gradient(180deg, #49606d, #2f414b);
+  border-color: #2f414b;
+}
+
+.battleships-cell.miss {
+  background: rgba(172, 205, 228, 0.22);
+  border-color: rgba(111, 141, 161, 0.62);
+}
+
+.battleships-cell.hit {
+  background: radial-gradient(circle, #d8754e 30%, #a94b2a 82%);
+  border-color: #8e3d1f;
+}
+
+.battleships-cell.sunk {
+  background: radial-gradient(circle, #ab2f2f 28%, #7d1616 88%);
+  border-color: #691111;
+}
+
+.battleships-cell:disabled {
+  cursor: default;
+}
+
+.battleships-preview-grid {
+  display: grid;
+  gap: 5px;
+  max-width: 240px;
+}
+
+.battleships-preview-cell {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: rgba(172, 205, 228, 0.3);
+}
+
+.battleships-preview-cell.ship {
+  background: linear-gradient(180deg, #516674, #334652);
+}
+
+.battleships-preview-cell.miss {
+  background: rgba(172, 205, 228, 0.22);
+}
+
+.battleships-preview-cell.hit,
+.battleships-preview-cell.sunk {
+  background: radial-gradient(circle, #bf5035 26%, #892b18 82%);
+}
+
 @media (max-width: 960px) {
   .shell {
     width: min(var(--max-width), calc(100% - 16px));
@@ -2431,6 +2573,8 @@ img {
   .sudoku-layout,
   .chess-layout,
   .go-layout,
+  .battleships-layout,
+  .battleships-board-grid,
   .twenty48-score-row {
     grid-template-columns: 1fr;
   }

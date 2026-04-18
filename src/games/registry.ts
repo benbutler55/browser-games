@@ -1,3 +1,5 @@
+import { BattleshipsGame } from './battleships/BattleshipsGame'
+import { BattleshipsPreview } from './battleships/BattleshipsPreview'
 import { ChessGame } from './chess/ChessGame'
 import { ChessPreview } from './chess/ChessPreview'
 import { GoGame } from './go/GoGame'
@@ -23,6 +25,25 @@ import { WordlePreview } from './wordle/WordlePreview'
 import type { GameDefinition } from './types'
 
 export const games: GameDefinition[] = [
+  {
+    slug: 'battleships',
+    name: 'Battleships',
+    genre: 'Strategy',
+    status: 'Playable',
+    description:
+      'Deploy your fleet on a 10x10 grid and take turns firing at the enemy. Hunt, sink, and adapt against AI difficulty tiers.',
+    tags: ['Turn-based', 'AI opponent', 'Grid tactics'],
+    highlights: [
+      'Manual placement with rotate, randomize, and clear controls.',
+      'Three AI levels: random fire, hunt-target, and advanced line continuation.',
+      'Round scores and preferred difficulty persist locally between sessions.',
+    ],
+    controls: 'Click your board to place ships, then click enemy cells to fire shots.',
+    initialMode: 'Single-player vs AI with easy, medium, and hard difficulty levels.',
+    expansionPath: 'Local two-player mode, no-touching placement rules, and richer battle telemetry.',
+    preview: BattleshipsPreview,
+    playable: BattleshipsGame,
+  },
   {
     slug: 'pong',
     name: 'Pong',

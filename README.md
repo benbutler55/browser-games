@@ -11,7 +11,7 @@ Browser Games is a static web app for hosting a growing collection of polished, 
 
 ## Current status
 
-The repo now contains the shared application foundation plus eleven playable games:
+The repo now contains the shared application foundation plus twelve playable games:
 
 - shared app shell and navigation
 - game registry for future expansion
@@ -27,9 +27,10 @@ The repo now contains the shared application foundation plus eleven playable gam
 - a fully playable `Sudoku` game with multiple difficulty levels, note-taking, and validation
 - a fully playable `Chess` game with complete rules, castling, en passant, promotion, and three AI difficulty levels using alpha-beta pruning
 - a fully playable `Go` game on a 9x9 board with territory scoring, ko rule, and three AI difficulty levels using Monte Carlo tree search
+- a fully playable `Battleships` game with 10x10 fleet placement, turn-based firing, and three AI difficulty levels
 - dark mode toggle with system preference detection
 - shared hooks: `useGameTimer`, `useGameStats`, `useKeyboardShortcut`, `useSound`
-- Vitest test suite with 264 tests across all games
+- Vitest test suite with 273 tests across all games
 - responsive styling and static-hosting-safe routing
 - CI and GitHub Pages deployment workflows in `.github/workflows/`
 
@@ -46,6 +47,7 @@ The repo now contains the shared application foundation plus eleven playable gam
 - Sudoku
 - Chess
 - Go
+- Battleships
 
 ## Project structure
 
@@ -59,6 +61,7 @@ src/
   games/
     2048/                  # game-specific modules
     chess/
+    battleships/
     go/
     minesweeper/
     noughts-and-crosses/
