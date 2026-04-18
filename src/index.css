@@ -2461,6 +2461,7 @@ img {
 
 .battleships-cell {
   aspect-ratio: 1;
+  position: relative;
   border: 1px solid var(--border-strong);
   border-radius: 8px;
   background: rgba(172, 205, 228, 0.3);
@@ -2486,6 +2487,18 @@ img {
 .battleships-cell.miss {
   background: rgba(172, 205, 228, 0.22);
   border-color: rgba(111, 141, 161, 0.62);
+}
+
+.battleships-cell.miss::before {
+  content: '×';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #5b6f80;
+  font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1;
 }
 
 .battleships-cell.hit {
